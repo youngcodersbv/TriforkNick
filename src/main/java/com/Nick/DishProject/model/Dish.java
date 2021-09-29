@@ -31,6 +31,9 @@ public class Dish {
     private DishType type;
 
     @Column
+    private String imgPath;
+
+    @Column
     private String description;
 
     @OneToMany(mappedBy = "dish")
@@ -105,6 +108,22 @@ public class Dish {
 
     public void setDiets(Set<Diet> diets) {
         this.diets = diets;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public static enum DishType {
