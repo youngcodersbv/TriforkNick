@@ -1,3 +1,100 @@
-<div *ngFor="let dish of dishes">
-  <div>{{dish.name}}</div>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="#">TIME TO DISH</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto topnav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dishes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Inventory</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Customer Sign In</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form>
+            </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </nav>
 </div>
+
+
+
+<section>
+  <div class="container">
+    <div class="text-center mb-5">
+      <h5 class="text-primary h6">Dishes</h5>
+      <h2 class="display-20 display-md-18 display-lg-16"></h2>
+    </div>
+    <div class="row">
+
+      <!-- each dish gets its own container -->
+      <div *ngFor="let dish of dishes" class="col-lg-4 col-md-6 mb-2-6">
+        <article class="card card-style2">
+          <div class="card-img">
+            <img class="rounded-top" src="{{dish?.imgPath}}}" alt="...">
+            <div class="date"><span>15</span>Sep</div>
+          </div>
+          <div class="card-body">
+            <h3 class="h5"><a href="#!">{{dish?.name}}</a></h3>
+            <p class="display-30">{{dish?.description}}</p>
+            <a href="#!" class="read-more">read more</a>
+          </div>
+
+          <!-- edit and delete button -->
+
+          <div class="d-flex flex-row-reverse">
+            <a href="#" class="btn btn-secondary tooltips"><i class="fa fa-times"></i></a>
+            <a href="#" class="btn btn-primary tooltips"><i class="fa fa-pencil"></i> </a>
+          </div>
+
+          <div class="card-footer">
+            <ul>
+
+              <li><a href="#!"><i class="fas fa-user"></i>TEMP: Author</a></li>
+              <li><a href="#!"><i class="far fa-comment-dots"></i><span>TEMP: Comment amount</span></a></li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
