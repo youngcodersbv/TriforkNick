@@ -1,4 +1,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 
 <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light">
@@ -26,51 +28,137 @@
         </li>
       </ul>
     </div>
-
-    <!-- The Modal -->
-    <div class="modal" id="myModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h4 class="modal-title">Customer Sign In</h4>
-            <button type="button" class="close" data-dismiss="modal">×</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body">
-            <form>
-            </form>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer">
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-
   </nav>
 </div>
 
+<!-- Modal Dish Edit -->
+<div class="modal fade" id="editDishModal" tabindex="-1" role="dialog" aria-labelledby="editDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDishModalLabel">Edit dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
+
+        <!--//TODO: Dish edit fields -->
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Delete-->
+<div class="modal fade" id="deleteDishModal" tabindex="-1" role="dialog" aria-labelledby="deleteDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteDishModalLAbel">Delete dish </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete <!-- //TODO: Figure out dish reference -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Add-->
+<div class="modal fade" id="addDishModal" tabindex="-1" role="dialog" aria-labelledby="addDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDishModalLabel">Add dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- TODO: Make huge form, including:
+                   - image uploading
+                   - large description editor
+                   - ingredient adding (multiple, maybe a +-button á la OpenOlat)
+                   - ingredient amount adding
+                   - type adding
+                   - diet adding (multiple, maybe a +-button á la OpenOlat)
+        -->
+
+        <form #addForm="ngForm" (ngSubmit)="onAddDish(addForm)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="name" class="form-control"
+                   id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="avgTimeToMake">Average time to make</label>
+            <input type="number" ngModel name="avgTimeToMake" class="form-control"
+                   id="avgTimeToMake" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="calories">Calories</label>
+            <input type="number" ngModel name="calories" class="form-control"
+                   id="calories" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="rating">Rating</label>
+            <input type="number" ngModel name="rating" class="form-control"
+                   id="rating" placeholder="0-10" required>
+          </div>
+          <div class="form-group">
+            <label for="warm">Warm or Cold</label>
+            <input type="text" ngModel name="warm" class="form-control"
+                   id="warm" placeholder="true/false" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Short description</label>
+            <input type="text" ngModel name="description" class="form-control"
+                   id="description" placeholder="Tasty." required>
+          </div>
+          <div class="form-group">
+            <label for="imgPath">Image upload placeholder</label>
+            <input type="text" ngModel name="imgPath" class="form-control"
+                   id="imgPath" placeholder="Your image here.">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new dish</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+</div>
 
 <section>
-  <div class="container">
+  <div class="container" id="main-container">
+    <a class="nav-link" (click)="onOpenModal(null!,'add')">Add Dish</a>
     <div class="text-center mb-5">
       <h5 class="text-primary h6">Dishes</h5>
       <h2 class="display-20 display-md-18 display-lg-16"></h2>
     </div>
     <div class="row">
-
       <!-- each dish gets its own container -->
       <div *ngFor="let dish of dishes" class="col-lg-4 col-md-6 mb-2-6">
         <article class="card card-style2">
           <div class="card-img">
-            <img class="rounded-top" src="{{dish?.imgPath}}}" alt="...">
+            <img class="rounded-top" src="{{dish?.imgPath}}" alt="...">
             <div class="date"><span>15</span>Sep</div>
           </div>
           <div class="card-body">
@@ -82,8 +170,8 @@
           <!-- edit and delete button -->
 
           <div class="d-flex flex-row-reverse">
-            <a href="#" class="btn btn-secondary tooltips"><i class="fa fa-times"></i></a>
-            <a href="#" class="btn btn-primary tooltips"><i class="fa fa-pencil"></i> </a>
+            <a href="#" (click)="onOpenModal(dish,'delete')" class="btn btn-secondary tooltips"><i class="fa fa-times"></i></a>
+            <a href="#" (click)="onOpenModal(dish,'edit')" class="btn btn-primary tooltips"><i class="fa fa-pencil"></i> </a>
           </div>
 
           <div class="card-footer">
@@ -98,3 +186,4 @@
     </div>
   </div>
 </section>
+

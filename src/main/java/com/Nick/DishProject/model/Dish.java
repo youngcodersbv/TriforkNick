@@ -27,7 +27,7 @@ public class Dish {
     @Column(nullable = false)
     private boolean warm;
 
-    @Column(nullable = false)
+    @Column
     private DishType type;
 
     @Column
