@@ -7,5 +7,6 @@ export interface Dish {
   warm: boolean;
   type: any;
   description: string;
+  longDescription: string;
   imgPath: string;
 }

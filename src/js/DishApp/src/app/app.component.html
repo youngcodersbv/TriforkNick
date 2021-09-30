@@ -1,6 +1,8 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+<head>
+  <title>Time to Dish</title>
+</head>
 
 <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light">
@@ -135,6 +137,11 @@
             <label for="imgPath">Image upload placeholder</label>
             <input type="text" ngModel name="imgPath" class="form-control"
                    id="imgPath" placeholder="Your image here.">
+          </div>
+          <div class="form-group">
+            <label for="longDescription">Long description</label>
+            <input type="text" ngModel name="longDescription" class="form-control"
+                   id="longDescription" placeholder="Longer description.">
           </div>
           <div class="modal-footer">
             <button type="button" id="add-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>

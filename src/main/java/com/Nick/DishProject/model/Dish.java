@@ -36,6 +36,9 @@ public class Dish {
     @Column
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String longDescription;
+
     @OneToMany(mappedBy = "dish")
     private Set<DishIngredient> ingredients;
 
@@ -52,6 +55,14 @@ public class Dish {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     public int getAvgTimeToMake() {
