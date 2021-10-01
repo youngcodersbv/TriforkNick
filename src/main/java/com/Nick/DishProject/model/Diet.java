@@ -1,7 +1,8 @@
 package com.Nick.DishProject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,7 @@ public class Diet {
     @Column
     private DietType type;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "dish_diet",

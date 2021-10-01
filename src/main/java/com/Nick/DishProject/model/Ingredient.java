@@ -1,6 +1,8 @@
 package com.Nick.DishProject.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class Ingredient {
     @Column
     private IngredientType type;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "ingredient")
     private Set<DishIngredient> dishes;
 

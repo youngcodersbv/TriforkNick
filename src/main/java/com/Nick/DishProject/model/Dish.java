@@ -1,5 +1,7 @@
 package com.Nick.DishProject.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -39,9 +41,11 @@ public class Dish {
     @Column(columnDefinition = "TEXT")
     private String longDescription;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "dish")
     private Set<DishIngredient> ingredients;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy = "dishes")
     private Set<Diet> diets;
 
