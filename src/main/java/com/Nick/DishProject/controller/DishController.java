@@ -1,7 +1,6 @@
 package com.Nick.DishProject.controller;
 
 
-import com.Nick.DishProject.dto.DishDTO;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.service.DietService;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/dish")
@@ -28,7 +28,7 @@ public class DishController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(value = "type",required = false) Dish.DishType type,
-                                                   @RequestParam(value = "diet",required = false) Diet.DietType diet) {
+                                                   @RequestParam(value = "diet",required = false) String diet) {
         List<Dish> dishes = dishService.findAllDishes();
         List<Dish> result = new ArrayList<>();
 
@@ -40,6 +40,16 @@ public class DishController {
                         }
                         if(dish.getType().equals(type)) return true;
                         else return false;
+                    }
+                    if(diet != null) {
+                        if(dish.getDiets().isEmpty()) {
+                           return false;
+                        }
+                        if(!dish.getDiets().stream().filter(dietEnt -> dietEnt.getType().equals(diet)).collect(Collectors.toList()).isEmpty()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                     return true;
                 }).forEach(result::add);

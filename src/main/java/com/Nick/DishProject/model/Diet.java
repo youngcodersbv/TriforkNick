@@ -16,7 +16,7 @@ public class Diet {
 
 
     @Column
-    private DietType type;
+    private String type;
 
     @ManyToMany(mappedBy = "diets")
     private Set<Dish> dishes;
@@ -25,11 +25,11 @@ public class Diet {
         return id;
     }
 
-    public DietType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(DietType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -39,13 +39,5 @@ public class Diet {
 
     public void setDishes(Set<Dish> dishes) {
         this.dishes = dishes;
-    }
-
-    public enum DietType{
-        VEGETARIAN,
-        VEGAN,
-        PESCETERIAN,
-        REGULAR,
-        GLUTEN_FREE
     }
 }
