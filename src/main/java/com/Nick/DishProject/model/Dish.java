@@ -41,12 +41,14 @@ public class Dish {
     @Column(columnDefinition = "TEXT")
     private String longDescription;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "dish")
     private Set<DishIngredient> ingredients;
 
-    @JsonManagedReference
-    @ManyToMany(mappedBy = "dishes")
+    @ManyToMany
+    @JoinTable(
+            name = "dish_diet",
+            joinColumns = @JoinColumn(name="dish_id"),
+            inverseJoinColumns = @JoinColumn(name="diet_id"))
     private Set<Diet> diets;
 
     public Long getId() {

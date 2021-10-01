@@ -18,7 +18,6 @@ public class Ingredient {
     @Column
     private IngredientType type;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "ingredient")
     private Set<DishIngredient> dishes;
 

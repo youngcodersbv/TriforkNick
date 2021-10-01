@@ -1,11 +1,12 @@
 package com.Nick.DishProject.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"dishes"})
 @Table(name = "diet", schema = "public")
 public class Diet {
 
@@ -17,12 +18,7 @@ public class Diet {
     @Column
     private DietType type;
 
-    @JsonBackReference
-    @ManyToMany
-    @JoinTable(
-            name = "dish_diet",
-            joinColumns = @JoinColumn(name="diet_id"),
-            inverseJoinColumns = @JoinColumn(name="dish_id"))
+    @ManyToMany(mappedBy = "diets")
     private Set<Dish> dishes;
 
     public Long getId() {

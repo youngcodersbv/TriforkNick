@@ -2,22 +2,22 @@ package com.Nick.DishProject.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@JsonIgnoreProperties({"dish","ingredient"})
 public class DishIngredient {
 
     @Id
     private Long id;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "dish_id")
     private Dish dish;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="ingredient_id")
     private Ingredient ingredient;
