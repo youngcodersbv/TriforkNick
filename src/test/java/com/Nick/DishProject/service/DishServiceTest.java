@@ -1,6 +1,5 @@
 package com.Nick.DishProject.service;
 
-import com.Nick.DishProject.controller.DishController;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
 import org.junit.jupiter.api.Test;
@@ -9,13 +8,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +65,6 @@ class DishServiceTest {
         dishService.deleteDishById(1L);
         verify(dishRepository, times(1)).deleteDishById(eq(1L));
     }
-
-
 
     private Dish createDish() {
         Dish dish = new Dish();
