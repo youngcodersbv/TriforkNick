@@ -63,7 +63,6 @@ public class DishService {
         if(type == null && diet == null) {
             return true;
         }
-        boolean flag = false;
         if(type != null) {
             if(!dish.isOfType(type)) return false;
         }
@@ -72,5 +71,4 @@ public class DishService {
         }
         return true;
     }
-
 }

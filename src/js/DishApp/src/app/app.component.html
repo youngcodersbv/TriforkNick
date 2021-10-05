@@ -144,6 +144,15 @@
                    id="longDescription" placeholder="Longer description.">
             </textarea>
           </div>
+          <!--TODO: Refactor this garbage to multiple-choice type buttons. -->
+          <div>
+          <select [(ngModel)]="selectedDiet" class="form-control" name="diets">
+            <option value="">Select a diet</option>
+            <option *ngFor='let diet of dietsList' [ngValue]='diet'>
+              {{diet.id}} {{diet.type}}
+            </option>
+          </select>
+          </div>
           <div class="modal-footer">
             <button type="button" id="add-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new dish</button>
@@ -163,7 +172,7 @@
     </div>
     <div class="row">
       <!-- each dish gets its own container -->
-      <div *ngFor="let dish of dishes" class="col-lg-4 col-md-6 mb-2-6">
+      <div *ngFor="let dish of dishesList" class="col-lg-4 col-md-6 mb-2-6">
         <article class="card card-style2">
           <div class="card-img">
             <img class="rounded-top" src="{{dish?.imgPath}}" alt="...">
