@@ -45,7 +45,7 @@ public class Dish {
     @OneToMany(mappedBy = "dish")
     private Set<DishIngredient> ingredients;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "dish_diet",
             joinColumns = @JoinColumn(name="dish_id"),

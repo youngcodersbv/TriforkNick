@@ -27,6 +27,6 @@ export class DishService{
   }
 
   public deleteDish(dishId: number): Observable<void> {
-    return this.http.delete<void>('${this.apiServerurl}/dish/delete/${dishId}')
+    return this.http.delete<void>(`${this.apiServerUrl}/dish/delete/${dishId}`)
   }
 }

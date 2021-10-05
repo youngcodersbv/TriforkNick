@@ -18,6 +18,7 @@ export class AppComponent implements OnInit{
   public diets!: Diet[];
   public nullDiets = [];
   public selectedDiet:any;
+  public deleteDish!: Dish;
 
   constructor(private dishService: DishService, private dietService: DietService) {
   }
@@ -25,7 +26,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.getDishes();
-    this.getDiets();
   }
 
 
@@ -72,21 +72,22 @@ export class AppComponent implements OnInit{
     );
   }
 
-  public dishToJSON(diets:Diet[]): string {
-    let out:string = "[";
-    for(let i = 0; i < diets.length; ++i) {
-      console.log(diets[i]);
-      out += "{";
-      out += "\n \"id\": \""+diets[i].id+"\",";
-      out += "\n\"type\": \""+diets[i].type+"\"";
-      out += "}";
-      if(i < diets.length-1) {
-        out += ",";
-      }
+  public onDeleteDish(dishId:number): void {
+    const dishForm = document.getElementById('delete-dish-form');
+    if(dishForm != null) {
+      dishForm.click();
     }
-    out += "\n]";
-    return out;
-  }
+
+    this.dishService.deleteDish(dishId).subscribe(
+      (response: void) => {
+        console.log("Deleted");
+        this.getDishes();
+        },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+        }
+      );
+    }
 
   public onOpenModal(dish: Dish, mode: string): void {
     const container = document.getElementById('main-container');
@@ -95,12 +96,14 @@ export class AppComponent implements OnInit{
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if(mode === 'add') {
+      this.getDiets();
       button.setAttribute('data-target','#addDishModal');
     }
     if(mode === 'edit') {
       button.setAttribute('data-target','#editDishModal');
     }
     if(mode === 'delete') {
+      this.deleteDish = dish;
       button.setAttribute('data-target','#deleteDishModal');
     }
     if(container != null) {
