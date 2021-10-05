@@ -1,5 +1,6 @@
 package com.Nick.DishProject.service;
 
+import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -84,8 +87,49 @@ class DishServiceTest {
         assertThat(dishes.equals(result));
     }
 
+    @Test
+    void filterDishByDietTypeExists() {
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(createDish());
+        dishes.add(createSecondDish());
+
+        when(dishService.findAllDishes()).thenReturn(dishes);
+
+        List<Dish> result = dishService.findAllFilteredDishes(null,"VEGAN");
+        assertThat(result.size() == 1);
+    }
+
+    @Test
+    void filterDishByDietTypeDoesntExist() {
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(createDish());
+        dishes.add(createSecondDish());
+
+        when(dishService.findAllDishes()).thenReturn(dishes);
+
+        List<Dish> result = dishService.findAllFilteredDishes(null, "REGULAR");
+        assertThat(dishes.size() == 0);
+    }
+
+    @Test
+    void filterDishByDietTypeCapsInsensitive() {
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(createDish());
+        dishes.add(createSecondDish());
+
+        when(dishService.findAllDishes()).thenReturn(dishes);
+
+        List<Dish> result = dishService.findAllFilteredDishes(null, "Vegan");
+        assertThat(dishes.size() == 1);
+    }
+
     private Dish createDish() {
+        Set<Diet> diets= new HashSet<>();
+        Diet diet = new Diet();
+        diet.setType("VEGAN");
+        diets.add(diet);
         Dish dish = new Dish();
+        dish.setDiets(diets);
         dish.setName("Something");
         dish.setAvgTimeToMake(10);
         dish.setCalories(100);
@@ -98,7 +142,13 @@ class DishServiceTest {
         return dish;
     }
     private Dish createSecondDish() {
+        Set<Diet> diets= new HashSet<>();
+        Diet diet = new Diet();
+        diet.setType("PESCO");
+        diets.add(diet);
+
         Dish dish = new Dish();
+        dish.setDiets(diets);
         dish.setName("Something");
         dish.setAvgTimeToMake(10);
         dish.setCalories(100);
