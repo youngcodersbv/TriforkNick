@@ -6,7 +6,9 @@ import com.Nick.DishProject.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,6 +43,34 @@ public class DishService {
         return StreamSupport
                 .stream(dietRepository.findAll().spliterator(),false)
                 .collect(Collectors.toList());
+    }
+
+    public List<Dish> findAllFilteredDishes(Dish.DishType type, String diet) {
+        List<Dish> dishes = new ArrayList<>();
+
+        findAllDishes().stream()
+                .filter(createFilter(type, diet))
+                .forEach(dishes::add);
+
+        return dishes;
+    }
+
+    private Predicate<Dish> createFilter(Dish.DishType type, String diet) {
+        return dish -> filter(type, diet, dish);
+    }
+
+    private boolean filter(Dish.DishType type, String diet, Dish dish) {
+        if(type == null && diet == null) {
+            return true;
+        }
+        boolean flag = false;
+        if(type != null) {
+            if(!dish.isOfType(type)) return false;
+        }
+        if(diet != null) {
+            if(!dish.isOfDiet(diet)) return false;
+        }
+        return true;
     }
 
 }

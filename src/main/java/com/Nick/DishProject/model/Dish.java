@@ -154,6 +154,18 @@ public class Dish {
         FAST_FOOD
     }
 
+    public boolean isOfType(DishType type) {
+        if(this.type == type) return true;
+        else return false;
+    }
+
+    public boolean isOfDiet(String dietType) {
+        for(Diet diet : diets) {
+            if(diet.getType().equals(dietType)) return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "id:" + id +

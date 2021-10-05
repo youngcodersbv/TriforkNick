@@ -66,6 +66,24 @@ class DishServiceTest {
         verify(dishRepository, times(1)).deleteDishById(eq(1L));
     }
 
+    @Test
+    void filterDishByDishType() {
+        List<Dish> dishes = new ArrayList<>();
+        dishes.add(createDish());
+        dishes.add(createSecondDish());
+
+        when(dishService.findAllDishes()).thenReturn(dishes);
+
+        List<Dish> result = dishService.findAllFilteredDishes(Dish.DishType.ASIAN,null);
+        assertThat(dishes.size() != result.size());
+
+        result = dishService.findAllFilteredDishes(Dish.DishType.PIZZA,null);
+        assertThat(result.size() == 0);
+
+        result = dishService.findAllFilteredDishes(null,null);
+        assertThat(dishes.equals(result));
+    }
+
     private Dish createDish() {
         Dish dish = new Dish();
         dish.setName("Something");
@@ -73,6 +91,20 @@ class DishServiceTest {
         dish.setCalories(100);
         dish.setDescription("Definitely something");
         dish.setWarm(true);
+        dish.setType(Dish.DishType.ASIAN);
+        dish.setRating(10);
+        dish.setImgPath("");
+        dish.setLongDescription("Definitely definitely something");
+        return dish;
+    }
+    private Dish createSecondDish() {
+        Dish dish = new Dish();
+        dish.setName("Something");
+        dish.setAvgTimeToMake(10);
+        dish.setCalories(100);
+        dish.setDescription("Definitely something");
+        dish.setWarm(true);
+        dish.setType(Dish.DishType.MEDITERRANEAN);
         dish.setRating(10);
         dish.setImgPath("");
         dish.setLongDescription("Definitely definitely something");
