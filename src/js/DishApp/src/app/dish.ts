@@ -1,3 +1,5 @@
+import {Diet} from "./diet";
+
 export interface Dish {
   id: number;
   name: string;
@@ -9,4 +11,5 @@ export interface Dish {
   description: string;
   longDescription: string;
   imgPath: string;
+  diets: object[];
 }
