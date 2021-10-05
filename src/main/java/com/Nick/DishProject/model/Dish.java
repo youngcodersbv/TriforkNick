@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -161,7 +162,7 @@ public class Dish {
 
     public boolean isOfDiet(String dietType) {
         for(Diet diet : diets) {
-            if(diet.getType().equals(dietType)) return true;
+            if(diet.getType().toLowerCase(Locale.ROOT).equals(dietType.toLowerCase(Locale.ROOT))) return true;
         }
         return false;
     }
