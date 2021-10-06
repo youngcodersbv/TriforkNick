@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Dish} from "./dish";
 import {DishService} from "./dish.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {NgForm} from "@angular/forms";
+import {FormArray, NgForm, Validators} from "@angular/forms";
 import {Diet} from "./diet";
 import {DietService} from "./diet.service";
-import {readSpanComment} from "@angular/compiler-cli/src/ngtsc/typecheck/src/comments";
+import {FormControl} from "@angular/forms";
+import {setupTestingRouter} from "@angular/router/testing";
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,9 @@ import {readSpanComment} from "@angular/compiler-cli/src/ngtsc/typecheck/src/com
 export class AppComponent implements OnInit{
   public dishesList!: Dish[];
   public dietsList!: Diet[];
-  public diets!: Diet[];
-  public nullDiets = [];
-  public selectedDiet:any;
+  public selectedDiets:object[] =[];
   public deleteDish!: Dish;
+  public updateDish!: Dish;
 
   constructor(private dishService: DishService, private dietService: DietService) {
   }
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit{
   ngOnInit() {
     this.getDishes();
   }
+
 
 
 
@@ -50,26 +51,32 @@ export class AppComponent implements OnInit{
       });
   }
 
-  public onAddDish(addForm: NgForm): void {
-    this.diets = [];
-    this.diets.push(this.selectedDiet);
-    addForm.controls['diets'].setValue(this.diets);
+  public onUpdateSelectedDiet(value: Diet) {
+    if(this.selectedDiets.includes(value)) {
+      this.selectedDiets.splice(this.selectedDiets.indexOf(value));
+    } else {
+      this.selectedDiets.push(value);
+    }
+    for (var diet of this.selectedDiets) {
+      console.log(diet);
+    }
+  }
 
+  public onAddDish(addForm: NgForm): void {
+    addForm.controls['diets'].setValue(this.selectedDiets);
     const dishForm = document.getElementById('add-dish-form');
     if(dishForm != null) {
-
       dishForm.click();
     }
-
     this.dishService.addDish(addForm.value).subscribe(
       (response: Dish) => {
         console.log(response);
+        addForm.reset();
         this.getDishes();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
-      }
-    );
+      });
   }
 
   public onDeleteDish(dishId:number): void {
@@ -77,7 +84,6 @@ export class AppComponent implements OnInit{
     if(dishForm != null) {
       dishForm.click();
     }
-
     this.dishService.deleteDish(dishId).subscribe(
       (response: void) => {
         console.log("Deleted");
@@ -89,6 +95,25 @@ export class AppComponent implements OnInit{
       );
     }
 
+    public onUpdateDish(updateForm:NgForm):void {
+      const dishForm=document.getElementById('update-dish-form');
+      updateForm.controls['diets'].setValue(this.selectedDiets);
+      updateForm.controls['id'].setValue(this.updateDish.id);
+
+      if(dishForm!=null) {
+        dishForm.click();
+      }
+      this.dishService.updateDish(updateForm.value).subscribe(
+        (response:Dish) => {
+          console.log(response);
+          updateForm.reset();
+          this.getDishes();
+        },
+        (error:HttpErrorResponse) => {
+          alert(error.message);
+        });
+    }
+
   public onOpenModal(dish: Dish, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
@@ -97,9 +122,14 @@ export class AppComponent implements OnInit{
     button.setAttribute('data-toggle', 'modal');
     if(mode === 'add') {
       this.getDiets();
-      button.setAttribute('data-target','#addDishModal');
+      this.selectedDiets=[];
+      button.setAttribute('data-target', '#addDishModal');
+
     }
     if(mode === 'edit') {
+      this.getDiets();
+      this.updateDish = dish;
+      console.log(dish);
       button.setAttribute('data-target','#editDishModal');
     }
     if(mode === 'delete') {
@@ -110,6 +140,9 @@ export class AppComponent implements OnInit{
       container.appendChild(button);
     }
     button.click();
+  }
 
+  public resetForm(form: NgForm) {
+    form.reset();
   }
 }

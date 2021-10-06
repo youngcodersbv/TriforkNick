@@ -1,0 +1,14 @@
+
+.cb-wrapper{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  padding-bottom: 5%;
+  grid-area: auto;
+  grid-gap:5px;
+}
+
+.cb-wrapper label{
+  text-align:left;
+}
+
+
