@@ -11,5 +11,5 @@ export interface Dish {
   description: string;
   longDescription: string;
   imgPath: string;
-  diets: object[];
+  diets: Diet[];
 }

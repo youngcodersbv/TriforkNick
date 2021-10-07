@@ -52,62 +52,61 @@
           <div class="form-group">
             <div class="idHidden">
             <label for="idEdit"></label>
-            <input type="text" ngModel name="id" class="form-control"
-                   id="idEdit" [value]="updateDish?.id">
+            <input type="text" [(ngModel)]="updateDish?.id!" name="id" class="form-control"
+                   id="idEdit">
             </div>
           </div>
           <div class="form-group">
             <label for="nameEdit">Name</label>
-            <input type="text" ngModel name="name" class="form-control"
-                   id="nameEdit" placeholder="Name" [value]="updateDish?.name!" required>
+            <input type="text" [(ngModel)]="updateDish?.name!" name="name" class="form-control"
+                   id="nameEdit" placeholder="Name" required>
           </div>
           <div class="form-group">
             <label for="avgTimeToMakeEdit">Average time to make</label>
-            <input type="number" ngModel name="avgTimeToMake" class="form-control"
-                   id="avgTimeToMakeEdit" placeholder="00" [value]="updateDish?.avgTimeToMake!" required>
+            <input type="number" [(ngModel)]="updateDish?.avgTimeToMake!" name="avgTimeToMake" class="form-control"
+                   id="avgTimeToMakeEdit" placeholder="00" required>
           </div>
           <div class="form-group">
             <label for="caloriesEdit">Calories</label>
-            <input type="number" ngModel name="calories" class="form-control"
-                   id="caloriesEdit" placeholder="00" [value]="updateDish?.calories!" required>
+            <input type="number" [(ngModel)]="updateDish?.calories!" name="calories" class="form-control"
+                   id="caloriesEdit" placeholder="00" required>
           </div>
           <div class="form-group">
             <label for="ratingEdit">Rating</label>
-            <input type="number" ngModel name="rating" class="form-control"
-                   id="ratingEdit" placeholder="0-10" [value]="updateDish?.rating!" required>
+            <input type="number" [(ngModel)]="updateDish?.rating!" name="rating" class="form-control"
+                   id="ratingEdit" placeholder="0-10" required>
           </div>
           <div class="form-group">
             <label for="warmEdit">Warm or Cold</label>
-            <input type="text" ngModel name="warm" class="form-control"
-                   id="warmEdit" placeholder="true/false" [value]="updateDish?.warm!" required>
+            <input type="text" [(ngModel)]="updateDish?.warm!" name="warm" class="form-control"
+                   id="warmEdit" placeholder="true/false" required>
           </div>
           <div class="form-group">
             <label for="descriptionEdit">Short description</label>
-            <input type="text" ngModel name="description" class="form-control"
-                   id="descriptionEdit" placeholder="Tasty." [value]="updateDish?.description!" required>
+            <input type="text" [(ngModel)]="updateDish?.description!" name="description" class="form-control"
+                   id="descriptionEdit" placeholder="Tasty."  required>
           </div>
           <div class="form-group">
             <label for="imgPathEdit">Image upload placeholder</label>
-            <input type="text" ngModel name="imgPath" class="form-control"
-                   id="imgPathEdit" placeholder="Your image here." [value]="updateDish?.imgPath!">
+            <input type="text" [(ngModel)]="updateDish?.imgPath!" name="imgPath" class="form-control"
+                   id="imgPathEdit" placeholder="Your image here." >
           </div>
           <div class="form-group">
             <label for="longDescriptionEdit">Long description</label>
-            <textarea ngModel name="longDescription" class="form-control"
-                      id="longDescriptionEdit" placeholder="Longer description." [value]="updateDish?.longDescription!">
+            <textarea [(ngModel)]="updateDish?.longDescription!" name="longDescription" class="form-control"
+                      id="longDescriptionEdit" placeholder="Longer description." >
             </textarea>
           </div>
-          <input type="text" ngModel name="diets" class="form-control" [value]="updateDish?.diets!" hidden>
+          <input type="text" [(ngModel)]="updateDish?.diets!" name="diets" class="form-control" hidden>
           <div>
             <label for="lb-diets">Diets</label><br />
             <div class="cb-wrapper">
-              <label *ngFor="let diet of dietsList" id="lb-dietsEdit">
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-dietsEdit">
                 <input
+                  name="a{{index}}"
                   type="checkbox"
-                  (change)="onUpdateSelectedDiet(diet)"
-                  [checked]="updateDish?.diets!.includes(diet)"
-                  name="{{diet}}"
-                  value="">
+                  [(ngModel)]="dietsList[index].selected"
+                (click)="onUpdateSelectedDiet(dietsList[index])">
                 {{diet.type.toLocaleLowerCase()}}
               </label>
             </div>
@@ -208,7 +207,6 @@
                    id="longDescription" placeholder="Longer description.">
             </textarea>
           </div>
-          <!--TODO: Refactor this garbage to multiple-choice type buttons. -->
           <input type="text" ngModel name="diets" class="form-control" hidden>
           <div>
             <label for="lb-diets">Diets</label><br />
@@ -217,7 +215,7 @@
                 <input
                   type="checkbox"
                   (change)="onUpdateSelectedDiet(diet)"
-                  name="diets"
+                  name="{{diet}}"
                   value="">
                   {{diet.type.toLocaleLowerCase()}}
               </label>

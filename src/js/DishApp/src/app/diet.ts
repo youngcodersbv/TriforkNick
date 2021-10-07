@@ -4,5 +4,5 @@ export interface Diet{
   id:number;
   type:string;
   selected:boolean;
-  dishes:object[];
+  dishes:Dish[];
 }
