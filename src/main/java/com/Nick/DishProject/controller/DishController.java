@@ -1,6 +1,7 @@
 package com.Nick.DishProject.controller;
 
 
+import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.service.DietService;
@@ -27,9 +28,9 @@ public class DishController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(value = "type",required = false) Dish.DishType type,
+    public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(value = "category",required = false) Category category,
                                                    @RequestParam(value = "diet",required = false) String diet) {
-        List<Dish> dishes = dishService.findAllFilteredDishes(type,diet);
+        List<Dish> dishes = dishService.findAllFilteredDishes(category,diet);
 
         return new ResponseEntity<>(dishes, HttpStatus.OK);
     }

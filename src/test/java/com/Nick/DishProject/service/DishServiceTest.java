@@ -1,5 +1,6 @@
 package com.Nick.DishProject.service;
 
+import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
@@ -70,17 +71,21 @@ class DishServiceTest {
     }
 
     @Test
-    void filterDishByDishType() {
+    void filterDishByCategory() {
         List<Dish> dishes = new ArrayList<>();
         dishes.add(createDish());
         dishes.add(createSecondDish());
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        List<Dish> result = dishService.findAllFilteredDishes(Dish.DishType.ASIAN,null);
+        Category category = new Category();
+        category.setType("ASIAN");
+
+        List<Dish> result = dishService.findAllFilteredDishes(category,null);
         assertThat(dishes.size() != result.size());
 
-        result = dishService.findAllFilteredDishes(Dish.DishType.PIZZA,null);
+        category.setType("PIZZA");
+        result = dishService.findAllFilteredDishes(category,null);
         assertThat(result.size() == 0);
 
         result = dishService.findAllFilteredDishes(null,null);
@@ -128,14 +133,21 @@ class DishServiceTest {
         Diet diet = new Diet();
         diet.setType("VEGAN");
         diets.add(diet);
+
+        Set<Category> categories = new HashSet<>();
+        Category category = new Category();
+        category.setType("ASIAN");
+        categories.add(category);
+
         Dish dish = new Dish();
         dish.setDiets(diets);
+        dish.setCategories(categories);
         dish.setName("Something");
         dish.setAvgTimeToMake(10);
         dish.setCalories(100);
         dish.setDescription("Definitely something");
         dish.setWarm(true);
-        dish.setType(Dish.DishType.ASIAN);
+        dish.setCategories(categories);
         dish.setRating(10);
         dish.setImgPath("");
         dish.setLongDescription("Definitely definitely something");
@@ -147,6 +159,11 @@ class DishServiceTest {
         diet.setType("PESCO");
         diets.add(diet);
 
+        Set<Category> categories = new HashSet<>();
+        Category category = new Category();
+        category.setType("MEDITERRANEAN");
+        categories.add(category);
+
         Dish dish = new Dish();
         dish.setDiets(diets);
         dish.setName("Something");
@@ -154,7 +171,7 @@ class DishServiceTest {
         dish.setCalories(100);
         dish.setDescription("Definitely something");
         dish.setWarm(true);
-        dish.setType(Dish.DishType.MEDITERRANEAN);
+        dish.setCategories(categories);
         dish.setRating(10);
         dish.setImgPath("");
         dish.setLongDescription("Definitely definitely something");

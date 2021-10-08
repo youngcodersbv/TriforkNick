@@ -31,9 +31,6 @@ public class Dish {
     private boolean warm;
 
     @Column
-    private DishType type;
-
-    @Column
     private String imgPath;
 
     @Column
@@ -51,6 +48,13 @@ public class Dish {
             joinColumns = @JoinColumn(name="dish_id"),
             inverseJoinColumns = @JoinColumn(name="diet_id"))
     private Set<Diet> diets;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "dish_category",
+            joinColumns = @JoinColumn(name="dish_id"),
+            inverseJoinColumns = @JoinColumn(name="category_id"))
+    private Set<Category> categories;
 
     public Long getId() {
         return id;
@@ -104,14 +108,6 @@ public class Dish {
         this.warm = warm;
     }
 
-    public DishType getType() {
-        return type;
-    }
-
-    public void setType(DishType type) {
-        this.type = type;
-    }
-
     public Set<DishIngredient> getIngredients() {
         return ingredients;
     }
@@ -144,20 +140,19 @@ public class Dish {
         this.description = description;
     }
 
-    public static enum DishType {
-        PIZZA,
-        SALAD,
-        PASTA,
-        MEDITERRANEAN,
-        DRINK,
-        ASIAN,
-        DUTCH,
-        FAST_FOOD
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public boolean isOfType(DishType type) {
-        if(this.type == type) return true;
-        else return false;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public boolean hasType(Category category) {
+        for(Category c : categories) {
+            if(c == category) return true;
+        }
+        return false;
     }
 
     public boolean isOfDiet(String dietType) {
@@ -174,7 +169,6 @@ public class Dish {
                 "\ntime:"+Integer.toString(avgTimeToMake)+
                 "\ncal:"+Integer.toString(calories)+
                 "\nrating:"+Integer.toString(rating)+
-                "\nwarm:"+warm+
-                "\ntype:"+type;
+                "\nwarm:"+warm;
     }
 }
