@@ -7,6 +7,8 @@ import {Diet} from "./diet";
 import {DietService} from "./diet.service";
 import {Category} from "./category";
 import {CategoryService} from "./category.service";
+import {Ingredient} from "./ingredient";
+import {IngredientService} from "./ingredient.service";
 
 @Component({
   selector: 'app-root',
@@ -17,12 +19,15 @@ export class AppComponent implements OnInit{
   public dishesList!: Dish[];
   public dietsList: Diet[] = [];
   public categoryList: Category[] = [];
+  public ingredientList: Ingredient[] = [];
+
   public deleteDish!: Dish;
   public currentDish!: Dish;
 
   constructor(private dishService: DishService,
               private dietService: DietService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private ingredientService: IngredientService) {
   }
 
 
@@ -30,6 +35,7 @@ export class AppComponent implements OnInit{
     this.getDishes();
     this.getDiets();
     this.getCategories();
+    this.getIngredients();
   }
 
   public getDiets(): void {
@@ -38,6 +44,16 @@ export class AppComponent implements OnInit{
         this.dietsList=response;
       },
       (error: HttpErrorResponse) => {
+        alert(error.message);
+      });
+  }
+
+  public getIngredients(): void {
+    this.ingredientService.getIngredients().subscribe(
+      (response: Ingredient[]) => {
+        this.ingredientList=response;
+      },
+      (error:HttpErrorResponse) => {
         alert(error.message);
       });
   }
@@ -60,6 +76,14 @@ export class AppComponent implements OnInit{
       (error: HttpErrorResponse) => {
         alert(error.message);
       });
+  }
+
+  public onUpdateSelectedIngredient(value: Ingredient) {
+    if(value.selected) {
+      value.selected=false;
+    } else {
+      value.selected=true;
+    }
   }
 
   public onUpdateSelectedDiet(value: Diet) {
@@ -108,14 +132,30 @@ export class AppComponent implements OnInit{
     }
   }
 
+  public updateInitSelectedIngredients() {
+    for(let i = 0;i<this.ingredientList.length;++i) {
+      for(let j = 0; j < this.currentDish.ingredients.length; j++) {
+        if(this.ingredientList[i].id == this.currentDish.ingredients[j].id) {
+          this.ingredientList[i].selected = true;
+          this.currentDish.ingredients[j].selected=true;
+          this.currentDish.ingredients[j] = this.ingredientList[i];
+        }
+      }
+    }
+  }
+
   public onAddDish(addForm: NgForm): void {
     addForm.controls['diets'].setValue(this.getSelectedDiets());
     addForm.controls['categories'].setValue(this.getSelectedCategories());
+    addForm.controls['ingredients'].setValue(this.getSelectedIngredients());
+
     const dishForm = document.getElementById('add-dish-form');
     if(dishForm != null) {
       dishForm.click();
     }
-    this.dishService.addDish(addForm.value).subscribe(
+    console.log(addForm.value);
+
+    this.dishService.addDishDto(addForm.value).subscribe(
       (response: Dish) => {
         console.log(response);
         this.wipeSelectedDiets();
@@ -152,6 +192,16 @@ export class AppComponent implements OnInit{
     return res;
   }
 
+  public getSelectedIngredients(): Ingredient[] {
+    var res: Ingredient[] = [];
+    for(let i = 0; i < this.ingredientList.length; ++i) {
+      if(this.ingredientList[i].selected) {
+        res.push(this.ingredientList[i]);
+      }
+    }
+    return res;
+  }
+
   public wipeSelectedDiets() {
     for(let i = 0; i < this.dietsList.length; ++i) {
       this.dietsList[i].selected=false;
@@ -161,6 +211,12 @@ export class AppComponent implements OnInit{
   public wipeSelectedCategories() {
     for(let i = 0; i < this.categoryList.length; ++i) {
       this.categoryList[i].selected=false;
+    }
+  }
+
+  public wipeSelectedIngredients() {
+    for(let i = 0; i < this.ingredientList.length; ++i) {
+      this.ingredientList[i].selected=false;
     }
   }
 
@@ -184,15 +240,17 @@ export class AppComponent implements OnInit{
       const dishForm=document.getElementById('update-dish-form');
       updateForm.controls['diets'].setValue(this.getSelectedDiets());
       updateForm.controls['categories'].setValue(this.getSelectedCategories());
+      updateForm.controls['ingredients'].setValue(this.getSelectedIngredients());
 
       if(dishForm!=null) {
         dishForm.click();
       }
-      this.dishService.updateDish(updateForm.value).subscribe(
+      this.dishService.updateDishDto(updateForm.value).subscribe(
         (response:Dish) => {
           console.log(response);
           this.wipeSelectedDiets();
           this.wipeSelectedCategories();
+          this.wipeSelectedIngredients();
           this.getDishes();
         },
         (error:HttpErrorResponse) => {
@@ -218,6 +276,7 @@ export class AppComponent implements OnInit{
 
       this.updateInitSelectedCategories();
       this.updateInitSelectedDiets();
+      this.updateInitSelectedIngredients();
 
       button.setAttribute('data-target','#editDishModal');
     }

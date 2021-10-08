@@ -1,9 +1,13 @@
 package com.Nick.DishProject.controller;
 
+import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Ingredient;
 import com.Nick.DishProject.service.IngredientService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/ingredient")
@@ -13,6 +17,18 @@ public class IngredientController {
 
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Ingredient>> getAllIngredients() {
+        List<Ingredient> ingredients = ingredientService.findAllIngredients();
+        return new ResponseEntity<>(ingredients, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Ingredient> addDiet(@RequestBody Ingredient ingredient) {
+        Ingredient newIngredient = ingredientService.addIngredient(ingredient);
+        return new ResponseEntity<>(newIngredient,HttpStatus.CREATED);
     }
 
 }

@@ -2,6 +2,7 @@ package com.Nick.DishProject.service;
 
 import com.Nick.DishProject.exception.DishNotFoundException;
 import com.Nick.DishProject.model.Category;
+import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,29 +47,35 @@ public class DishService {
                 .collect(Collectors.toList());
     }
 
-    public List<Dish> findAllFilteredDishes(Category category, String diet) {
+    public List<Dish> findAllFilteredDishes(List<String> categories, List<String> diets) {
         List<Dish> dishes = new ArrayList<>();
-
-        findAllDishes().stream()
-                .filter(createFilter(category, diet))
+        List<Dish> allDishes = findAllDishes();
+        allDishes.stream()
+                .filter(createFilter(categories, diets))
                 .forEach(dishes::add);
 
         return dishes;
     }
 
-    private Predicate<Dish> createFilter(Category category, String diet) {
-        return dish -> filter(category, diet, dish);
+    private Predicate<Dish> createFilter(List<String> categories, List<String> diets) {
+        return dish -> filter(categories, diets, dish);
     }
 
-    private boolean filter(Category category, String diet, Dish dish) {
-        if(category == null && diet == null) {
+    private boolean filter(List<String> categories, List<String> diets, Dish dish) {
+        if(categories == null && diets == null) {
+            return true;
+        } else if(categories.isEmpty() && diets.isEmpty()) {
             return true;
         }
-        if(category != null) {
-            if(!dish.hasType(category)) return false;
-        }
-        if(diet != null) {
-            if(!dish.isOfDiet(diet)) return false;
+        if(categories != null && !categories.isEmpty()) {
+            if (dish.getCategories().stream()
+                    .filter(cat -> categories.contains(cat.getType()))
+                    .collect(Collectors.toList()).isEmpty()) return false;
+;        }
+        if(diets != null && !categories.isEmpty()) {
+            if(dish.getDiets().stream()
+                    .filter(diet -> diets.contains(diet.getType()))
+                    .collect(Collectors.toList()).isEmpty()) return false;
         }
         return true;
     }

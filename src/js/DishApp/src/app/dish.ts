@@ -1,5 +1,6 @@
 import {Diet} from "./diet";
 import {Category} from "./category";
+import {Ingredient} from "./ingredient";
 
 export interface Dish {
   id: number;
@@ -13,4 +14,5 @@ export interface Dish {
   imgPath: string;
   categories: Category[];
   diets: Diet[];
+  ingredients: Ingredient[];
 }

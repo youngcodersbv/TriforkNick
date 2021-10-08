@@ -1,31 +1,29 @@
 package com.Nick.DishProject.model;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+@Embeddable
 @Entity
-@JsonIgnoreProperties({"dish","ingredient"})
+@JsonIgnoreProperties({"dish"})
 public class DishIngredient {
 
-    @Id
-    private Long id;
+    @EmbeddedId
+    private DishIngredientId id = new DishIngredientId();
 
-    @ManyToOne
-    @JoinColumn(name = "dish_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @MapsId("dishId")
     private Dish dish;
 
-    @ManyToOne
-    @JoinColumn(name="ingredient_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @MapsId("ingredientId")
     private Ingredient ingredient;
 
     @Column(nullable = false)
     private int amountNeeded;
 
-    public Long getId() {
+    public DishIngredientId getId() {
         return id;
     }
 
@@ -35,5 +33,21 @@ public class DishIngredient {
 
     public void setAmountNeeded(int amountNeeded) {
         this.amountNeeded = amountNeeded;
+    }
+
+    public Dish getDish() {
+        return dish;
+    }
+
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 }
