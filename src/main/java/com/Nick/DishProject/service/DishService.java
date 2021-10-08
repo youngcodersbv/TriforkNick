@@ -1,6 +1,7 @@
 package com.Nick.DishProject.service;
 
 import com.Nick.DishProject.exception.DishNotFoundException;
+import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,26 +46,26 @@ public class DishService {
                 .collect(Collectors.toList());
     }
 
-    public List<Dish> findAllFilteredDishes(Dish.DishType type, String diet) {
+    public List<Dish> findAllFilteredDishes(Category category, String diet) {
         List<Dish> dishes = new ArrayList<>();
 
         findAllDishes().stream()
-                .filter(createFilter(type, diet))
+                .filter(createFilter(category, diet))
                 .forEach(dishes::add);
 
         return dishes;
     }
 
-    private Predicate<Dish> createFilter(Dish.DishType type, String diet) {
-        return dish -> filter(type, diet, dish);
+    private Predicate<Dish> createFilter(Category category, String diet) {
+        return dish -> filter(category, diet, dish);
     }
 
-    private boolean filter(Dish.DishType type, String diet, Dish dish) {
-        if(type == null && diet == null) {
+    private boolean filter(Category category, String diet, Dish dish) {
+        if(category == null && diet == null) {
             return true;
         }
-        if(type != null) {
-            if(!dish.isOfType(type)) return false;
+        if(category != null) {
+            if(!dish.hasType(category)) return false;
         }
         if(diet != null) {
             if(!dish.isOfDiet(diet)) return false;

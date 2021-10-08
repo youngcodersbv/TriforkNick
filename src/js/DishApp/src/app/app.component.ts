@@ -5,8 +5,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {FormArray, NgForm, Validators} from "@angular/forms";
 import {Diet} from "./diet";
 import {DietService} from "./diet.service";
-import {FormControl} from "@angular/forms";
-import {setupTestingRouter} from "@angular/router/testing";
+import {Category} from "./category";
+import {CategoryService} from "./category.service";
 
 @Component({
   selector: 'app-root',
@@ -16,23 +16,36 @@ import {setupTestingRouter} from "@angular/router/testing";
 export class AppComponent implements OnInit{
   public dishesList!: Dish[];
   public dietsList: Diet[] = [];
-  public toUpdateDiets:Diet[] =[];
+  public categoryList: Category[] = [];
   public deleteDish!: Dish;
-  public updateDish!: Dish;
+  public currentDish!: Dish;
 
-  constructor(private dishService: DishService, private dietService: DietService) {
+  constructor(private dishService: DishService,
+              private dietService: DietService,
+              private categoryService: CategoryService) {
   }
 
 
   ngOnInit() {
     this.getDishes();
     this.getDiets();
+    this.getCategories();
   }
 
   public getDiets(): void {
     this.dietService.getDiets().subscribe(
       (response: Diet[]) => {
         this.dietsList=response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      });
+  }
+
+  public getCategories(): void {
+    this.categoryService.getCategories().subscribe(
+      (response: Category[]) => {
+        this.categoryList=response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -57,16 +70,39 @@ export class AppComponent implements OnInit{
     }
   }
 
+  public onUpdateSelectedCategory(value: Category) {
+    if(value.selected) {
+      value.selected=false;
+    } else {
+      value.selected=true;
+    }
+  }
+
   public updateInitSelectedDiets() {
     for(let i = 0; i < this.dietsList.length;++i) {
-      for(let j = 0; j < this.updateDish.diets.length; ++j) {
+      for(let j = 0; j < this.currentDish.diets.length; ++j) {
         console.log(this.dietsList[i].id + " DietsList " + this.dietsList[i].type);
-        console.log(this.updateDish.diets[j].id + " SelectedDiets" + this.updateDish.diets[j].type);
-        if(this.dietsList[i].id == this.updateDish.diets[j].id) {
+        console.log(this.currentDish.diets[j].id + " SelectedDiets" + this.currentDish.diets[j].type);
+        if(this.dietsList[i].id == this.currentDish.diets[j].id) {
           console.log("EQUAL!");
           this.dietsList[i].selected=true;
-          this.updateDish.diets[j].selected=true;
-          this.updateDish.diets[j] = this.dietsList[i];
+          this.currentDish.diets[j].selected=true;
+          this.currentDish.diets[j] = this.dietsList[i];
+        }
+      }
+    }
+  }
+
+  public updateInitSelectedCategories() {
+    for(let i = 0; i < this.categoryList.length;++i) {
+      for(let j = 0; j < this.currentDish.categories.length; ++j) {
+        console.log(this.categoryList[i].id + " CategoriesList " + this.categoryList[i].type);
+        console.log(this.currentDish.categories[j].id + " CategoriesSel." + this.currentDish.categories[j].type);
+        if(this.categoryList[i].id == this.currentDish.categories[j].id) {
+          console.log("EQUAL!");
+          this.categoryList[i].selected=true;
+          this.currentDish.categories[j].selected=true;
+          this.currentDish.categories[j] = this.categoryList[i];
         }
       }
     }
@@ -74,6 +110,7 @@ export class AppComponent implements OnInit{
 
   public onAddDish(addForm: NgForm): void {
     addForm.controls['diets'].setValue(this.getSelectedDiets());
+    addForm.controls['categories'].setValue(this.getSelectedCategories());
     const dishForm = document.getElementById('add-dish-form');
     if(dishForm != null) {
       dishForm.click();
@@ -82,6 +119,7 @@ export class AppComponent implements OnInit{
       (response: Dish) => {
         console.log(response);
         this.wipeSelectedDiets();
+        this.wipeSelectedCategories();
         addForm.reset();
         this.getDishes();
       },
@@ -104,9 +142,25 @@ export class AppComponent implements OnInit{
     return res;
   }
 
+  public getSelectedCategories(): Category[] {
+    var res: Category[] = [];
+    for(let i = 0; i < this.categoryList.length;++i) {
+      if(this.categoryList[i].selected) {
+        res.push(this.categoryList[i]);
+      }
+    }
+    return res;
+  }
+
   public wipeSelectedDiets() {
     for(let i = 0; i < this.dietsList.length; ++i) {
       this.dietsList[i].selected=false;
+    }
+  }
+
+  public wipeSelectedCategories() {
+    for(let i = 0; i < this.categoryList.length; ++i) {
+      this.categoryList[i].selected=false;
     }
   }
 
@@ -129,6 +183,7 @@ export class AppComponent implements OnInit{
     public onUpdateDish(updateForm:NgForm):void {
       const dishForm=document.getElementById('update-dish-form');
       updateForm.controls['diets'].setValue(this.getSelectedDiets());
+      updateForm.controls['categories'].setValue(this.getSelectedCategories());
 
       if(dishForm!=null) {
         dishForm.click();
@@ -137,6 +192,7 @@ export class AppComponent implements OnInit{
         (response:Dish) => {
           console.log(response);
           this.wipeSelectedDiets();
+          this.wipeSelectedCategories();
           this.getDishes();
         },
         (error:HttpErrorResponse) => {
@@ -158,9 +214,9 @@ export class AppComponent implements OnInit{
     }
     if(mode === 'edit') {
 
-      this.updateDish = dish;
+      this.currentDish = dish;
 
-
+      this.updateInitSelectedCategories();
       this.updateInitSelectedDiets();
 
       button.setAttribute('data-target','#editDishModal');
@@ -169,6 +225,11 @@ export class AppComponent implements OnInit{
       this.deleteDish = dish;
       button.setAttribute('data-target','#deleteDishModal');
     }
+    if(mode === 'view') {
+      this.currentDish = dish;
+      button.setAttribute('data-target', '#viewDishModal');
+    }
+
     if(container != null) {
       container.appendChild(button);
     }

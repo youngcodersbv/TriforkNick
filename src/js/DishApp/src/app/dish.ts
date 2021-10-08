@@ -1,4 +1,5 @@
 import {Diet} from "./diet";
+import {Category} from "./category";
 
 export interface Dish {
   id: number;
@@ -7,9 +8,9 @@ export interface Dish {
   calories: number;
   rating: number;
   warm: boolean;
-  type: any;
   description: string;
   longDescription: string;
   imgPath: string;
+  categories: Category[];
   diets: Diet[];
 }
