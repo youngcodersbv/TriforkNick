@@ -7,9 +7,13 @@
 <div class="container">
   <nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="#">TIME TO DISH</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <ul class="navbar-nav ml-auto topnav">
+      <a class="nav-link" href="#" (click)="onOpenModal(null!,'filter')">Filter</a>
+    </ul>
+
+    <ul class="navbar-nav ml-auto topnav">
+      <a class="nav-link" href="#" (click)="onOpenModal(null!,'add')">Add Dish</a>
+    </ul>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto topnav">
@@ -200,6 +204,21 @@
             </div>
           </div>
 
+          <input type="text" [(ngModel)]="currentDish?.ingredients!" name="ingredients" class="form-control" hidden>
+          <div>
+            <label for="lb-ingredientsEdit">Ingredients</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let ingredient of ingredientList; let index = index;" id="lb-ingredientsEdit">
+                <input
+                  name="i{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="ingredientList[index].selected"
+                  (click)="onUpdateSelectedIngredient(ingredientList[index])">
+                {{ingredientList[index].name.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
       <div class="modal-footer">
         <button type="button" id="update-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
@@ -326,10 +345,24 @@
                   value="">
                   {{diet.type.toLocaleLowerCase()}}
               </label>
-
-
           </div>
           </div>
+
+          <input type="text" ngModel name="ingredients" class="form-control" hidden>
+          <div>
+            <label for="lb-ingredients">Ingredients</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let ingredient of ingredientList" id="lb-ingredients">
+                <input
+                  type="checkbox"
+                  (change)="onUpdateSelectedIngredient(ingredient)"
+                  name="{{ingredient}}"
+                  value="">
+                {{ingredient.name.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
           <div class="modal-footer">
             <button type="button" id="add-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new dish</button>
@@ -342,7 +375,6 @@
 
 <section>
   <div class="container" id="main-container">
-    <a class="nav-link" (click)="onOpenModal(null!,'add')">Add Dish</a>
     <div class="text-center mb-5">
       <h5 class="text-primary h6">Dishes</h5>
       <h2 class="display-20 display-md-18 display-lg-16"></h2>

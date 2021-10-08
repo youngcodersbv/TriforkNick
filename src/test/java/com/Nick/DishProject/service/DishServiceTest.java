@@ -78,14 +78,15 @@ class DishServiceTest {
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        Category category = new Category();
-        category.setType("ASIAN");
+        List<String> q = new ArrayList<>();
+        q.add("ASIAN");
 
-        List<Dish> result = dishService.findAllFilteredDishes(category,null);
+        List<Dish> result = dishService.findAllFilteredDishes(q,null);
         assertThat(dishes.size() != result.size());
 
-        category.setType("PIZZA");
-        result = dishService.findAllFilteredDishes(category,null);
+        q.removeAll(q);
+        q.add("PIZZA");
+        result = dishService.findAllFilteredDishes(q,null);
         assertThat(result.size() == 0);
 
         result = dishService.findAllFilteredDishes(null,null);
@@ -100,7 +101,10 @@ class DishServiceTest {
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        List<Dish> result = dishService.findAllFilteredDishes(null,"VEGAN");
+        List<String> q = new ArrayList<>();
+        q.add("VEGAN");
+
+        List<Dish> result = dishService.findAllFilteredDishes(null,q);
         assertThat(result.size() == 1);
     }
 
@@ -112,7 +116,10 @@ class DishServiceTest {
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        List<Dish> result = dishService.findAllFilteredDishes(null, "REGULAR");
+        List<String> q = new ArrayList<>();
+        q.add("REGULAR");
+
+        List<Dish> result = dishService.findAllFilteredDishes(null, q);
         assertThat(dishes.size() == 0);
     }
 
@@ -124,7 +131,10 @@ class DishServiceTest {
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        List<Dish> result = dishService.findAllFilteredDishes(null, "Vegan");
+        List<String> q = new ArrayList<>();
+        q.add("Vegan");
+
+        List<Dish> result = dishService.findAllFilteredDishes(null, q);
         assertThat(dishes.size() == 1);
     }
 

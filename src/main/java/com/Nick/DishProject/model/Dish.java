@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class Dish {
     private String longDescription;
 
     @OneToMany(mappedBy = "dish")
-    private Set<DishIngredient> ingredients;
+    private Set<DishIngredient> ingredients = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
@@ -160,6 +161,10 @@ public class Dish {
             if(diet.getType().toLowerCase(Locale.ROOT).equals(dietType.toLowerCase(Locale.ROOT))) return true;
         }
         return false;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

@@ -1,5 +1,13 @@
 package com.Nick.DishProject;
 
+import com.Nick.DishProject.model.Dish;
+import com.Nick.DishProject.model.DishIngredient;
+import com.Nick.DishProject.model.DishIngredientId;
+import com.Nick.DishProject.model.Ingredient;
+import com.Nick.DishProject.repository.DishIngredientRepository;
+import com.Nick.DishProject.repository.DishRepository;
+import com.Nick.DishProject.repository.IngredientRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +22,38 @@ public class DishProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DishProjectApplication.class, args);
+	}
+
+	@Bean
+	public CommandLineRunner cmd(DishRepository dr, IngredientRepository ir,
+								 DishIngredientRepository dIr) {
+		return(args -> {
+			if(!dr.findAll().iterator().hasNext()) {
+				Dish dish = new Dish();
+				dish.setName("Hello Test");
+				dish.setCalories(100);
+				dish.setRating(100);
+				dish.setDescription("Hello");
+				dish.setWarm(true);
+				dish.setAvgTimeToMake(10);
+
+				Ingredient ingredient = new Ingredient();
+				ingredient.setName("Hello Yum");
+				ingredient.setType("VEGETABLE");
+
+				DishIngredient dI = new DishIngredient();
+				dI.setDish(dish);
+				dI.setIngredient(ingredient);
+
+				dish.getIngredients().add(dI);
+				ingredient.getDishes().add(dI);
+
+				ir.save(ingredient);
+				dr.save(dish);
+
+				dIr.save(dI);
+			}
+		});
 	}
 
 	@Bean
