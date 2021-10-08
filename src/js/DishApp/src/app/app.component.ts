@@ -242,6 +242,8 @@ export class AppComponent implements OnInit{
       updateForm.controls['categories'].setValue(this.getSelectedCategories());
       updateForm.controls['ingredients'].setValue(this.getSelectedIngredients());
 
+      console.log(updateForm.value);
+
       if(dishForm!=null) {
         dishForm.click();
       }

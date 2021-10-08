@@ -1,6 +1,8 @@
 package com.Nick.DishProject.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -41,6 +43,7 @@ public class Dish {
     private String longDescription;
 
     @OneToMany(mappedBy = "dish")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<DishIngredient> ingredients = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
