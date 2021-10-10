@@ -1,1 +1,134 @@
-<p>diets works!</p>
+<div>
+<a class="button" href="/diets#" (click)="onOpenModal(null!, 'add')">Add Diet</a>
+</div>
+
+<!-- Modal Dish View -->
+<div class="modal fade " id="viewDietModal" tabindex="-1" role="dialog" aria-labelledby="viewDietModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDietModalLabel">{{currentDiet?.type}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="jasmine-title">
+          <h1>{{currentDiet?.type}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Edit -->
+<div class="modal fade" id="editDietModal" tabindex="-1" role="dialog" aria-labelledby="editDietModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDietModalLabel">Edit diet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <!--//TODO: Dish edit fields -->
+
+        <form #updateForm="ngForm" (ngSubmit)="onUpdateDiet(updateForm)">
+          <div class="form-group">
+            <div class="idHidden">
+              <label for="idEdit"></label>
+              <input type="text" [(ngModel)]="currentDiet?.id!" name="id" class="form-control"
+                     id="idEdit">
+            </div>
+
+            <div class="form-group">
+              <label for="typeEdit">Name</label>
+              <input type="text" [(ngModel)]="currentDiet?.type!" class="form-control"
+                     id="typeEdit" name="type" placeholder="Name" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="update-diet-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Delete-->
+<div class="modal fade" id="deleteDietModal" tabindex="-1" role="dialog" aria-labelledby="deleteDietModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteDietModalLabel">Delete dish </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete the dish "{{currentDiet?.type!}}" ?
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-diet-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="onDeleteDiet(currentDiet?.id!)" type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Add-->
+<div class="modal fade" id="addDietModal" tabindex="-1" role="dialog" aria-labelledby="addDietModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDietModalLabel">Add dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form #addForm="ngForm" (ngSubmit)="onAddDiet(addForm)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="type" class="form-control"
+                   id="name" placeholder="Name" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-diet-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new diet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<section class="diets">
+  <div class="container" id="main-container">
+    <div class="text-center mb-5">
+      <h5 class="text-primary h6">Diets</h5>
+      <h2 class="display-20 display-md-18 display-lg-16"></h2>
+    </div>
+    <div class="row">
+      <!-- each dish gets its own container -->
+      <div *ngFor="let diet of dietsList" class="col-lg-4 col-md-6 mb-2-6">
+        {{diet.type}} <a class="button" href="/diets#" (click)="onOpenModal(diet, 'edit')">edit</a> |
+        <a class="button" href="/diets#" (click)="onOpenModal(diet, 'delete')">delete</a>
+      </div>
+    </div>
+  </div>
+</section>
