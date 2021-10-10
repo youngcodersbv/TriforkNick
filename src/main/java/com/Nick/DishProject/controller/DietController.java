@@ -35,14 +35,14 @@ public class DietController {
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<Diet> updateDish(@RequestBody Diet diet) {
+    public ResponseEntity<Diet> updateDiet(@RequestBody Diet diet) {
         Diet newDiet = dietService.updateDiet(diet);
         return new ResponseEntity<>(newDiet, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     @Transactional
-    public ResponseEntity<?> deleteDishById(@PathVariable("id")Long id) {
+    public ResponseEntity<?> deleteDietById(@PathVariable("id")Long id) {
         dietService.deleteDietById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
