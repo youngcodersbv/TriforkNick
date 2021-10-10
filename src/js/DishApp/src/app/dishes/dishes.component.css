@@ -1,0 +1,43 @@
+
+.modal-body td {
+  padding:10px;
+}
+
+.idHidden{
+  visibility: hidden;
+  width: 0px;
+  height: 0px;
+}
+
+.modal-body p {
+  word-break: break-all;
+}
+
+
+.cb-wrapper{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  padding-bottom: 5%;
+  grid-area: auto;
+  grid-gap:5px;
+}
+
+.cb-wrapper label{
+  text-align:left;
+}
+
+.sidebar {
+  width: 20%;
+  padding: 10px;
+  margin: 0;
+  float: left;
+}
+
+.dishes {
+  width: 80%;
+  padding: 10px;
+  margin: 0;
+  float: right;
+}
+
+

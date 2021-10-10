@@ -1,6 +1,8 @@
 package com.Nick.DishProject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -10,13 +12,15 @@ import javax.persistence.*;
 public class DishIngredient {
 
     @EmbeddedId
+    @OnDelete(action=OnDeleteAction.CASCADE)
     private DishIngredientId id = new DishIngredientId();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @MapsId("dishId")
     private Dish dish;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("ingredientId")
     private Ingredient ingredient;
 

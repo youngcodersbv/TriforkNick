@@ -67,12 +67,12 @@ public class DishService {
         } else if(categories.isEmpty() && diets.isEmpty()) {
             return true;
         }
-        if(categories != null && !categories.isEmpty()) {
+        if(!categories.isEmpty()) {
             if (dish.getCategories().stream()
                     .filter(cat -> categories.contains(cat.getType()))
                     .collect(Collectors.toList()).isEmpty()) return false;
 ;        }
-        if(diets != null && !categories.isEmpty()) {
+        if(!diets.isEmpty()) {
             if(dish.getDiets().stream()
                     .filter(diet -> diets.contains(diet.getType()))
                     .collect(Collectors.toList()).isEmpty()) return false;

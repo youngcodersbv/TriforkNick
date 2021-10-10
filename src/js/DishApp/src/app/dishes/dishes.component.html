@@ -1,0 +1,407 @@
+<section class="sidebar">
+  <div class="filter"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="false" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
+  </div>
+    <div id="mobile-filter" class="collapse">
+      <div>
+        <h6 class="p-1 border-bottom">Filter By</h6>
+        <form #filterForm="ngForm" (ngSubmit)="onFilterDishes(filterForm)">
+          <div>
+            <p class="mb-2">Diet</p>
+            <ul class="list-group">
+              <input type="text" [(ngModel)]="filterList?.diets!" name="diets" class="form-control" hidden>
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-filterDiets">&nbsp;&nbsp;
+                <input
+                name="df{{index}}"
+                type="checkbox"
+                [(ngModel)]="dietsList[index].selectedFilter"
+                (click)="onFilterSelectedDiet(dietsList[index])">{{dietsList[index].type.toLocaleLowerCase()}}
+              </label>
+            </ul>
+          </div>
+          <div>
+            <p class="mb-2">Type</p>
+            <ul class="list-group">
+              <input type="text" [(ngModel)]="filterList?.categories!" name="categories" class="form-control" hidden>
+              <label *ngFor="let category of categoryList; let index = index;" id="lb-filterCategories">&nbsp;&nbsp;
+                <input
+                  name="cf{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="categoryList[index].selectedFilter"
+                  (click)="onFilterSelectedCategory(categoryList[index])">{{categoryList[index].type.toLocaleLowerCase()}}
+              </label>
+            </ul>
+
+          </div>
+          <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+      </div>
+    </div>
+</section>
+
+
+<div>
+  <a class="button" href="/dishes#" (click)="onOpenModal(null!, 'add')">Add Dish</a>
+</div>
+
+<!-- Modal Dish View -->
+<div class="modal fade " id="viewDishModal" tabindex="-1" role="dialog" aria-labelledby="viewDishModalLAbel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDishModalLabel">{{currentDish?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="jasmine-title">
+          <h1>{{currentDish?.name}}</h1>
+        </div>
+        <div>
+          <table>
+            <tbody>
+            <tr>
+              <td>Calories: </td>
+              <td>{{currentDish?.calories}}</td>
+            </tr>
+            <tr>
+              <td>Average time to make : </td>
+              <td>{{currentDish?.avgTimeToMake}} min.</td>
+            </tr>
+            <tr>
+              <td>Rating : </td>
+              <td>{{currentDish?.rating}}</td>
+            </tr>
+            <tr>
+              <td>Warm?</td>
+              <td *ngIf="currentDish?.warm">Yes</td>
+              <td *ngIf="!currentDish?.warm">No</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h5>Description</h5><br />
+          <p> {{currentDish?.longDescription}} </p>
+        </div>
+
+        <div>
+          <h5>Categories : </h5>
+          <a *ngFor="let categories of currentDish?.categories">| {{categories.type.toLocaleLowerCase()}} |</a>
+        </div>
+
+        <div>
+          <br />
+          <h5>Diets : </h5>
+          <a *ngFor="let diets of currentDish?.diets">| {{diets.type.toLocaleLowerCase()}} |</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Edit -->
+<div class="modal fade" id="editDishModal" tabindex="-1" role="dialog" aria-labelledby="editDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDishModalLabel">Edit dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <!--//TODO: Dish edit fields -->
+
+        <form #updateForm="ngForm" (ngSubmit)="onUpdateDish(updateForm)">
+          <div class="form-group">
+            <div class="idHidden">
+              <label for="idEdit"></label>
+              <input type="text" [(ngModel)]="currentDish?.id!" name="id" class="form-control"
+                     id="idEdit">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nameEdit">Name</label>
+            <input type="text" [(ngModel)]="currentDish?.name!" name="name" class="form-control"
+                   id="nameEdit" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="avgTimeToMakeEdit">Average time to make</label>
+            <input type="number" [(ngModel)]="currentDish?.avgTimeToMake!" name="avgTimeToMake" class="form-control"
+                   id="avgTimeToMakeEdit" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="caloriesEdit">Calories</label>
+            <input type="number" [(ngModel)]="currentDish?.calories!" name="calories" class="form-control"
+                   id="caloriesEdit" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="ratingEdit">Rating</label>
+            <input type="number" [(ngModel)]="currentDish?.rating!" name="rating" class="form-control"
+                   id="ratingEdit" placeholder="0-10" required>
+          </div>
+          <div class="form-group">
+            <label for="warmEdit">Warm or Cold</label>
+            <input type="text" [(ngModel)]="currentDish?.warm!" name="warm" class="form-control"
+                   id="warmEdit" placeholder="true/false" required>
+          </div>
+          <div class="form-group">
+            <label for="descriptionEdit">Short description</label>
+            <input type="text" [(ngModel)]="currentDish?.description!" name="description" class="form-control"
+                   id="descriptionEdit" placeholder="Tasty." required>
+          </div>
+          <div class="form-group">
+            <label for="imgPathEdit">Image upload placeholder</label>
+            <input type="text" [(ngModel)]="currentDish?.imgPath!" name="imgPath" class="form-control"
+                   id="imgPathEdit" placeholder="Your image here." >
+          </div>
+          <div class="form-group">
+            <label for="longDescriptionEdit">Long description</label>
+            <textarea [(ngModel)]="currentDish?.longDescription!" name="longDescription" class="form-control"
+                      id="longDescriptionEdit" placeholder="Longer description." >
+            </textarea>
+          </div>
+
+
+          <input type="text" [(ngModel)]="currentDish?.categories!" name="categories" class="form-control" hidden>
+          <div>
+            <label for="lb-categoriesEdit">Categories</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let category of categoryList; let index = index;" id="lb-categoriesEdit">
+                <input
+                  name="c{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="categoryList[index].selected"
+                  (click)="onUpdateSelectedCategory(categoryList[index])">
+                {{categoryList[index].type.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
+
+          <input type="text" [(ngModel)]="currentDish?.diets!" name="diets" class="form-control" hidden>
+          <div>
+            <label for="lb-dietsEdit">Diets</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-dietsEdit">
+                <input
+                  name="a{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="dietsList[index].selected"
+                  (click)="onUpdateSelectedDiet(dietsList[index])">
+                {{dietsList[index].type.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
+          <input type="text" [(ngModel)]="currentDish?.ingredients!" name="ingredients" class="form-control" hidden>
+          <div>
+            <label for="lb-ingredientsEdit">Ingredients</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let ingredient of ingredientList; let index = index;" id="lb-ingredientsEdit">
+                <input
+                  name="i{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="ingredientList[index].selected"
+                  (click)="onUpdateSelectedIngredient(ingredientList[index])">
+                {{ingredientList[index].name.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="update-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Delete-->
+<div class="modal fade" id="deleteDishModal" tabindex="-1" role="dialog" aria-labelledby="deleteDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteDishModalLabel">Delete dish </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete the dish "{{deleteDish?.name!}}" ?<!-- //TODO: Figure out dish reference -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-dish-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="onDeleteDish(deleteDish?.id!)" type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Dish Add-->
+<div class="modal fade" id="addDishModal" tabindex="-1" role="dialog" aria-labelledby="addDishModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDishModalLabel">Add dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- TODO: Make huge form, including:
+                   - image uploading
+                   - large description editor
+                   - ingredient adding (multiple, maybe a +-button á la OpenOlat)
+                   - ingredient amount adding
+                   - type adding
+                   - diet adding (multiple, maybe a +-button á la OpenOlat)
+        -->
+
+        <form #addForm="ngForm" (ngSubmit)="onAddDish(addForm)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="name" class="form-control"
+                   id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="avgTimeToMake">Average time to make</label>
+            <input type="number" ngModel name="avgTimeToMake" class="form-control"
+                   id="avgTimeToMake" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="calories">Calories</label>
+            <input type="number" ngModel name="calories" class="form-control"
+                   id="calories" placeholder="00" required>
+          </div>
+          <div class="form-group">
+            <label for="rating">Rating</label>
+            <input type="number" ngModel name="rating" class="form-control"
+                   id="rating" placeholder="0-10" required>
+          </div>
+          <div class="form-group">
+            <label for="warm">Warm or Cold</label>
+            <input type="text" ngModel name="warm" class="form-control"
+                   id="warm" placeholder="true/false" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Short description</label>
+            <input type="text" ngModel name="description" class="form-control"
+                   id="description" placeholder="Tasty." required>
+          </div>
+          <div class="form-group">
+            <label for="imgPath">Image upload placeholder</label>
+            <input type="text" ngModel name="imgPath" class="form-control"
+                   id="imgPath" placeholder="Your image here.">
+          </div>
+          <div class="form-group">
+            <label for="longDescription">Long description</label>
+            <textarea ngModel name="longDescription" class="form-control"
+                      id="longDescription" placeholder="Longer description.">
+            </textarea>
+          </div>
+
+          <input type="text" ngModel name="categories" class="form-control" hidden>
+          <div>
+            <label for="lb-categories">Categories</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let category of categoryList; let index = index;" id="lb-categories">
+                <input
+                  type="checkbox"
+                  (change)="onUpdateSelectedCategory(categoryList[index])"
+                  name="ac{{index}}">
+                {{categoryList[index].type.toLocaleLowerCase()}}
+              </label>
+
+            </div>
+          </div>
+
+          <input type="text" ngModel name="diets" class="form-control" hidden>
+          <div>
+            <label for="lb-diets">Diets</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-diets">
+                <input
+                  type="checkbox"
+                  (change)="onUpdateSelectedDiet(dietsList[index])"
+                  name="ad{{index}}">
+                {{dietsList[index].type.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
+          <input type="text" ngModel name="ingredients" class="form-control" hidden>
+          <div>
+            <label for="lb-ingredients">Ingredients</label><br />
+            <div class="cb-wrapper">
+              <label *ngFor="let ingredient of ingredientList; let index = index;" id="lb-ingredients">
+                <input
+                  type="checkbox"
+                  (change)="onUpdateSelectedIngredient(ingredientList[index])"
+                  name="ai{{index}}">
+                {{ingredientList[index].name.toLocaleLowerCase()}}
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" id="add-dish-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new dish</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="dishes">
+  <div class="container" id="main-container">
+  <div class="text-center mb-5">
+    <h5 class="text-primary h6">Dishes</h5>
+    <h2 class="display-20 display-md-18 display-lg-16"></h2>
+  </div>
+  <div class="row">
+    <!-- each dish gets its own container -->
+    <div *ngFor="let dish of dishesList" class="col-lg-4 col-md-6 mb-2-6">
+      <article class="card card-style2">
+        <div class="card-img">
+          <img class="rounded-top" src="{{dish?.imgPath}}" alt="...">
+          <div class="date"><span>15</span>Sep</div>
+        </div>
+        <div class="card-body">
+          <h3 class="h5"><a href="/dishes#" (click)="onOpenModal(dish, 'view')">{{dish?.name}}</a></h3>
+          <p class="display-30">{{dish?.description}}</p>
+          <a href="#!" class="read-more">read more</a>
+        </div>
+
+        <!-- edit and delete button -->
+
+        <div class="d-flex flex-row-reverse">
+          <a href="/dishes#" (click)="onOpenModal(dish,'delete')" class="btn btn-secondary tooltips"><i class="fa fa-times"></i></a>
+          <a href="/dishes#" (click)="onOpenModal(dish,'edit')" class="btn btn-primary tooltips"><i class="fa fa-pencil"></i> </a>
+        </div>
+
+        <div class="card-footer">
+          <ul>
+
+            <li><a href="/dishes#"><i class="fas fa-user"></i>TEMP: Author</a></li>
+            <li><a href="/dishes#"><i class="far fa-comment-dots"></i><span>TEMP: Comment amount</span></a></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+</section>

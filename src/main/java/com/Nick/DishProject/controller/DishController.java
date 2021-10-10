@@ -89,32 +89,30 @@ public class DishController {
     public ResponseEntity<Dish> updateDishDto(@RequestBody DishDto dishDto) {
 
         Dish dish = dishDto.createDish();
+        List<DishIngredient> dishIngredientList = dishIngredientService.findDishIngredientsByDish(dish);
+        dishIngredientList.stream().forEach(dI -> dishIngredientService.deleteDishIngredientById(dI.getId()));
+
+
         dishService.updateDish(dish);
         Set<Ingredient> ingredient = dishDto.getIngredients();
 
-        List<DishIngredient> dishIngredientList = dishIngredientService.findDishIngredientsByDish(dish);
-
         System.out.println(dish.toString());
 
-        DishIngredient dI = new DishIngredient();
+
         if(ingredient != null) {
             for (Ingredient i : ingredient) {
-
+                DishIngredient dI = new DishIngredient();
                 dI.setIngredient(i);
                 dI.setDish(dish);
 
-                if(!dishIngredientList.contains(dI)) {
+                dish.getIngredients().add(dI);
+                i.getDishes().add(dI);
 
-                    dish.getIngredients().add(dI);
-                    i.getDishes().add(dI);
-
-                    dI.setAmountNeeded(dishDto.getAmountNeeded());
-                    dishIngredientService.updateDishIngredient(dI);
-                    ingredientService.updateIngredient(i);
-                }
+                //dI.setAmountNeeded(dishDto.getAmountNeeded());
+                dishIngredientService.updateDishIngredient(dI);
+                ingredientService.updateIngredient(i);
             }
         }
-        dishService.updateDish(dish);
 
 
         return new ResponseEntity<>(dish, HttpStatus.CREATED);
@@ -125,24 +123,27 @@ public class DishController {
     public ResponseEntity<Dish> addDishDto(@RequestBody DishDto dishDto) {
 
         Dish dish = dishDto.createDish();
-        dishService.addDish(dish);
         Set<Ingredient> ingredient = dishDto.getIngredients();
 
+        dishService.addDish(dish);
         System.out.println(dish.toString());
 
-        DishIngredient dI = new DishIngredient();
         if(ingredient != null) {
             for (Ingredient i : ingredient) {
+
+                DishIngredient dI = new DishIngredient();
                 dI.setIngredient(i);
                 dI.setDish(dish);
+
                 dish.getIngredients().add(dI);
                 i.getDishes().add(dI);
-                dI.setAmountNeeded(dishDto.getAmountNeeded());
+
+                //dI.setAmountNeeded(dishDto.getAmountNeeded());
+
                 dishIngredientService.addDishIngredient(dI);
                 ingredientService.addIngredient(i);
             }
         }
-        dishService.addDish(dish);
 
 
         return new ResponseEntity<>(dish, HttpStatus.CREATED);
