@@ -17,7 +17,7 @@ public class DishDto {
     private String description;
     private String longDescription;
     private Set<Ingredient> ingredients;
-    private int amountNeeded;
+    private int[] amountNeeded;
     private Set<Diet> diets;
     private Set<Category> categories;
 
@@ -67,11 +67,11 @@ public class DishDto {
         return id;
     }
 
-    public int getAmountNeeded() {
+    public int[] getAmountNeeded() {
         return amountNeeded;
     }
 
-    public void setAmountNeeded(int amountNeeded) {
+    public void setAmountNeeded(int[] amountNeeded) {
         this.amountNeeded = amountNeeded;
     }
 

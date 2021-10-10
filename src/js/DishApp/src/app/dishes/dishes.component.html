@@ -352,6 +352,11 @@
                   (change)="onUpdateSelectedIngredient(ingredientList[index])"
                   name="ai{{index}}">
                 {{ingredientList[index].name.toLocaleLowerCase()}}
+                <div *ngIf="ingredientList[index].selected">
+                  <label for="ingredientAmount"></label>
+                  <input type="text" [(ngModel)]="amount" name="iia{{index}}"  class="form-control"
+                         id="ingredientAmount" placeholder="1" [defaultValue]="1" required>
+                </div>
               </label>
             </div>
           </div>

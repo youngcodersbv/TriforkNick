@@ -15,4 +15,5 @@ export interface Dish {
   categories: Category[];
   diets: Diet[];
   ingredients: Ingredient[];
+  amount: number[];
 }

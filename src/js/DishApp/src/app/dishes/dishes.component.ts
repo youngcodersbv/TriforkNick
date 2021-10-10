@@ -25,6 +25,8 @@ export class DishesComponent implements OnInit {
   public ingredientList: Ingredient[] = [];
   public filterList!: FilterList;
 
+  public amount: number[] = [];
+
   public deleteDish!: Dish;
   public currentDish!: Dish;
 
@@ -111,45 +113,58 @@ export class DishesComponent implements OnInit {
   }
 
   public updateInitSelectedDiets() {
-    for (let i = 0; i < this.dietsList.length; ++i) {
-      for (let j = 0; j < this.currentDish.diets.length; ++j) {
-        console.log(this.dietsList[i].id + " DietsList " + this.dietsList[i].type);
-        console.log(this.currentDish.diets[j].id + " SelectedDiets" + this.currentDish.diets[j].type);
-        if (this.dietsList[i].id == this.currentDish.diets[j].id) {
-          console.log("EQUAL!");
-          this.dietsList[i].selected = true;
-          this.currentDish.diets[j].selected = true;
-          this.currentDish.diets[j] = this.dietsList[i];
+    this.dietService.getDiets().subscribe(
+      (response: Diet[]) => {
+        for (let i = 0; i < response.length; ++i) {
+          for (let j = 0; j < this.currentDish.diets.length; j++) {
+            if (response[i].id == this.currentDish.diets[j].id) {
+              response[i].selected = true;
+              this.currentDish.diets[j].selected = true;
+            }
+          }
         }
-      }
-    }
+        this.dietsList = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      });
   }
 
   public updateInitSelectedCategories() {
-    for (let i = 0; i < this.categoryList.length; ++i) {
-      for (let j = 0; j < this.currentDish.categories.length; ++j) {
-        console.log(this.categoryList[i].id + " CategoriesList " + this.categoryList[i].type);
-        console.log(this.currentDish.categories[j].id + " CategoriesSel." + this.currentDish.categories[j].type);
-        if (this.categoryList[i].id == this.currentDish.categories[j].id) {
-          console.log("EQUAL!");
-          this.categoryList[i].selected = true;
-          this.currentDish.categories[j].selected = true;
-          this.currentDish.categories[j] = this.categoryList[i];
+    this.categoryService.getCategories().subscribe(
+      (response: Category[]) => {
+        for (let i = 0; i < response.length; ++i) {
+          for (let j = 0; j < this.currentDish.categories.length; j++) {
+            if (response[i].id == this.currentDish.categories[j].id) {
+              response[i].selected = true;
+              this.currentDish.categories[j].selected = true;
+            }
+          }
         }
-      }
-    }
+        this.categoryList = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      });
   }
 
   public updateInitSelectedIngredients() {
-    for (let i = 0; i < this.ingredientList.length; ++i) {
-      for (let j = 0; j < this.currentDish.ingredients.length; j++) {
-        if (this.ingredientList[i].id == this.currentDish.ingredients[j].id) {
-          this.ingredientList[i].selected = true;
-          this.currentDish.ingredients[j].selected = true;
-          this.currentDish.ingredients[j] = this.ingredientList[i];
+
+    this.ingredientService.getIngredients().subscribe(
+      (response: Ingredient[]) => {
+        for (let i = 0; i < response.length; ++i) {
+          for (let j = 0; j < this.currentDish.ingredients.length; j++) {
+            if (response[i].id == this.currentDish.ingredients[j].id) {
+              response[i].selected = true;
+              this.currentDish.ingredients[j].selected = true;
+            }
+          }
         }
-      }
-    }
+        this.ingredientList = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      });
   }
 
   public onFilterSelectedCategory(category:Category): void {
@@ -214,6 +229,7 @@ export class DishesComponent implements OnInit {
   }
 
   public onAddDish(addForm: NgForm): void {
+    console.log(this.amount);
     addForm.controls['diets'].setValue(this.getSelectedDiets());
     addForm.controls['categories'].setValue(this.getSelectedCategories());
     addForm.controls['ingredients'].setValue(this.getSelectedIngredients());
@@ -343,12 +359,14 @@ export class DishesComponent implements OnInit {
       button.setAttribute('data-target', '#addDishModal');
     }
     if (mode === 'edit') {
-
       this.currentDish = dish;
+
 
       this.updateInitSelectedCategories();
       this.updateInitSelectedDiets();
       this.updateInitSelectedIngredients();
+
+      console.log(this.dietsList);
 
       button.setAttribute('data-target', '#editDishModal');
     }

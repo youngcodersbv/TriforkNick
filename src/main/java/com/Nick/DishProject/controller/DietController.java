@@ -1,12 +1,14 @@
 package com.Nick.DishProject.controller;
 
 import com.Nick.DishProject.model.Diet;
+import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.service.DietService;
 import com.Nick.DishProject.service.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -29,5 +31,19 @@ public class DietController {
     public ResponseEntity<Diet> addDiet(@RequestBody Diet diet) {
         Diet newDiet = dietService.addDiet(diet);
         return new ResponseEntity<>(newDiet,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    @Transactional
+    public ResponseEntity<Diet> updateDish(@RequestBody Diet diet) {
+        Diet newDiet = dietService.updateDiet(diet);
+        return new ResponseEntity<>(newDiet, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteDishById(@PathVariable("id")Long id) {
+        dietService.deleteDietById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
