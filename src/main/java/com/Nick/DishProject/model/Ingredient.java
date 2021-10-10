@@ -3,6 +3,8 @@ package com.Nick.DishProject.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +27,7 @@ public class Ingredient {
     private String type;
 
     @OneToMany(mappedBy = "ingredient")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<DishIngredient> dishes = new HashSet<>();
 
     public Long getId() {

@@ -2,6 +2,8 @@ package com.Nick.DishProject.model;
 
 import com.Nick.DishProject.model.Dish;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class Category {
     private String type;
 
     @ManyToMany(mappedBy = "categories")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Dish> dishes;
 
     public Long getId() {
