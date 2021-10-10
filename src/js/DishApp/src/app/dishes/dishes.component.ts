@@ -9,6 +9,8 @@ import {CategoryService} from "../category.service";
 import {IngredientService} from "../ingredient.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NgForm} from "@angular/forms";
+import {FilterList} from "./filterList";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-dishes',
@@ -21,6 +23,7 @@ export class DishesComponent implements OnInit {
   public dietsList: Diet[] = [];
   public categoryList: Category[] = [];
   public ingredientList: Ingredient[] = [];
+  public filterList!: FilterList;
 
   public deleteDish!: Dish;
   public currentDish!: Dish;
@@ -37,6 +40,10 @@ export class DishesComponent implements OnInit {
     this.getDiets();
     this.getCategories();
     this.getIngredients();
+    this.filterList = new class implements FilterList {
+      categories: Category[] = [];
+      diets: Diet[] = [];
+    }
   }
 
   public getDiets(): void {
@@ -145,6 +152,67 @@ export class DishesComponent implements OnInit {
     }
   }
 
+  public onFilterSelectedCategory(category:Category): void {
+    if (category.selectedFilter) {
+      category.selectedFilter = false;
+    } else {
+      category.selectedFilter = true;
+    }
+  }
+
+  public getFilterCategories(): Category[] {
+    var res: Category[] = [];
+    for(let i = 0; i<this.categoryList.length; ++i) {
+      if(this.categoryList[i].selectedFilter) {
+        res.push(this.categoryList[i]);
+      }
+    }
+    return res;
+  }
+
+  public getFilterDiets(): Diet[] {
+    var res: Diet[] = [];
+    for(let i = 0; i<this.dietsList.length; ++i) {
+      if(this.dietsList[i].selectedFilter) {
+        res.push(this.dietsList[i]);
+      }
+    }
+    return res;
+  }
+
+  public onFilterSelectedDiet(diet: Diet): void {
+    if(diet.selectedFilter) {
+      diet.selectedFilter = false;
+    } else {
+      diet.selectedFilter = true;
+    }
+  }
+
+  public onFilterDishes(filterForm: NgForm): void {
+    filterForm.controls['diets'].setValue(this.getFilterDiets());
+    filterForm.controls['categories'].setValue(this.getFilterCategories());
+
+    this.filterList.diets = filterForm.controls['diets'].value;
+    this.filterList.categories = filterForm.controls['categories'].value;
+
+    console.log(this.filterList);
+    var diets: string[] = [];
+    var categories: string[] = [];
+
+    this.filterList.categories.forEach(category => categories.push(category.type));
+    this.filterList.diets.forEach(diet => diets.push(diet.type));
+
+
+    this.dishService.getDishesFiltered(categories, diets).subscribe(
+      (response: Dish[]) => {
+        console.log(response);
+        this.dishesList=response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+    });
+  }
+
   public onAddDish(addForm: NgForm): void {
     addForm.controls['diets'].setValue(this.getSelectedDiets());
     addForm.controls['categories'].setValue(this.getSelectedCategories());
@@ -161,6 +229,7 @@ export class DishesComponent implements OnInit {
         console.log(response);
         this.wipeSelectedDiets();
         this.wipeSelectedCategories();
+        this.wipeSelectedIngredients();
         addForm.reset();
         this.getDishes();
       },
@@ -269,6 +338,8 @@ export class DishesComponent implements OnInit {
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
       this.getDiets();
+      this.getIngredients();
+      this.getCategories();
       button.setAttribute('data-target', '#addDishModal');
     }
     if (mode === 'edit') {

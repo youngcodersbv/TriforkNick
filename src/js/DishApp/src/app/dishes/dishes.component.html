@@ -1,3 +1,42 @@
+<section class="sidebar">
+  <div class="filter"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="false" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
+  </div>
+    <div id="mobile-filter" class="collapse">
+      <div>
+        <h6 class="p-1 border-bottom">Filter By</h6>
+        <form #filterForm="ngForm" (ngSubmit)="onFilterDishes(filterForm)">
+          <div>
+            <p class="mb-2">Diet</p>
+            <ul class="list-group">
+              <input type="text" [(ngModel)]="filterList?.diets!" name="diets" class="form-control" hidden>
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-filterDiets">&nbsp;&nbsp;
+                <input
+                name="df{{index}}"
+                type="checkbox"
+                [(ngModel)]="dietsList[index].selectedFilter"
+                (click)="onFilterSelectedDiet(dietsList[index])">{{dietsList[index].type.toLocaleLowerCase()}}
+              </label>
+            </ul>
+          </div>
+          <div>
+            <p class="mb-2">Type</p>
+            <ul class="list-group">
+              <input type="text" [(ngModel)]="filterList?.categories!" name="categories" class="form-control" hidden>
+              <label *ngFor="let category of categoryList; let index = index;" id="lb-filterCategories">&nbsp;&nbsp;
+                <input
+                  name="cf{{index}}"
+                  type="checkbox"
+                  [(ngModel)]="categoryList[index].selectedFilter"
+                  (click)="onFilterSelectedCategory(categoryList[index])">{{categoryList[index].type.toLocaleLowerCase()}}
+              </label>
+            </ul>
+
+          </div>
+          <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+      </div>
+    </div>
+</section>
 
 
 <div>
@@ -276,17 +315,15 @@
 
           <input type="text" ngModel name="categories" class="form-control" hidden>
           <div>
-            <label for="lb-diets">Categories</label><br />
+            <label for="lb-categories">Categories</label><br />
             <div class="cb-wrapper">
-              <label *ngFor="let category of categoryList" id="lb-categories">
+              <label *ngFor="let category of categoryList; let index = index;" id="lb-categories">
                 <input
                   type="checkbox"
-                  (change)="onUpdateSelectedCategory(category)"
-                  name="{{category}}"
-                  value="">
-                {{category.type.toLocaleLowerCase()}}
+                  (change)="onUpdateSelectedCategory(categoryList[index])"
+                  name="ac{{index}}">
+                {{categoryList[index].type.toLocaleLowerCase()}}
               </label>
-
 
             </div>
           </div>
@@ -295,13 +332,12 @@
           <div>
             <label for="lb-diets">Diets</label><br />
             <div class="cb-wrapper">
-              <label *ngFor="let diet of dietsList" id="lb-diets">
+              <label *ngFor="let diet of dietsList; let index = index;" id="lb-diets">
                 <input
                   type="checkbox"
-                  (change)="onUpdateSelectedDiet(diet)"
-                  name="{{diet}}"
-                  value="">
-                {{diet.type.toLocaleLowerCase()}}
+                  (change)="onUpdateSelectedDiet(dietsList[index])"
+                  name="ad{{index}}">
+                {{dietsList[index].type.toLocaleLowerCase()}}
               </label>
             </div>
           </div>
@@ -310,13 +346,12 @@
           <div>
             <label for="lb-ingredients">Ingredients</label><br />
             <div class="cb-wrapper">
-              <label *ngFor="let ingredient of ingredientList" id="lb-ingredients">
+              <label *ngFor="let ingredient of ingredientList; let index = index;" id="lb-ingredients">
                 <input
                   type="checkbox"
-                  (change)="onUpdateSelectedIngredient(ingredient)"
-                  name="{{ingredient}}"
-                  value="">
-                {{ingredient.name.toLocaleLowerCase()}}
+                  (change)="onUpdateSelectedIngredient(ingredientList[index])"
+                  name="ai{{index}}">
+                {{ingredientList[index].name.toLocaleLowerCase()}}
               </label>
             </div>
           </div>
@@ -331,8 +366,8 @@
   </div>
 </div>
 
-
-<div class="container" id="main-container">
+<section class="dishes">
+  <div class="container" id="main-container">
   <div class="text-center mb-5">
     <h5 class="text-primary h6">Dishes</h5>
     <h2 class="display-20 display-md-18 display-lg-16"></h2>
@@ -369,3 +404,4 @@
     </div>
   </div>
 </div>
+</section>
