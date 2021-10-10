@@ -7,19 +7,24 @@ import {FormsModule} from "@angular/forms";
 import { DishesComponent } from './dishes/dishes.component';
 import { DietsComponent } from './diets/diets.component';
 import { RouterModule} from "@angular/router";
+import { IngredientsComponent } from './ingredients/ingredients.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DishesComponent,
-    DietsComponent
+    DietsComponent,
+    IngredientsComponent,
+    CategoriesComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([{path: 'dishes', component: DishesComponent},
-                                {path: 'diets', component: DietsComponent}
+                                {path: 'diets', component: DietsComponent},
+                                {path: 'ingredients', component: IngredientsComponent}
     ]),
   ],
   providers: [],

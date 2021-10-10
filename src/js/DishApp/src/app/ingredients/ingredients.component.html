@@ -1,0 +1,142 @@
+<div>
+  <a class="button" href="/ingredients#" (click)="onOpenModal(null!, 'add')">Add Ingredient</a>
+</div>
+
+<!-- Modal Ingredient View -->
+<div class="modal fade " id="viewIngModal" tabindex="-1" role="dialog" aria-labelledby="viewIngModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewIngModalLabel">{{currentIngrendient?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="jasmine-title">
+          <h1>{{currentIngrendient?.name}}</h1>
+          <h5>{{currentIngrendient?.type}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Edit -->
+<div class="modal fade" id="editIngModal" tabindex="-1" role="dialog" aria-labelledby="editIngModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editIngModalLabel">Edit diet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <!--//TODO: Dish edit fields -->
+
+        <form #updateForm="ngForm" (ngSubmit)="onUpdateIngredient(updateForm)">
+          <div class="form-group">
+            <div class="idHidden">
+              <label for="idEdit"></label>
+              <input type="text" [(ngModel)]="currentIngrendient?.id!" name="id" class="form-control"
+                     id="idEdit">
+            </div>
+
+            <div class="form-group">
+              <label for="nameEdit">Name</label>
+              <input type="text" [(ngModel)]="currentIngrendient?.name!" class="form-control"
+                     id="nameEdit" name="name" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+              <label for="typeEdit">Type</label>
+              <input type="text" [(ngModel)]="currentIngrendient?.type!" class="form-control"
+                     id="typeEdit" name="type" placeholder="Type" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="update-ing-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Delete-->
+<div class="modal fade" id="deleteIngModal" tabindex="-1" role="dialog" aria-labelledby="deleteIngModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteIngModalLabel">Delete dish </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete the dish "{{currentIngrendient?.name!}}" ?
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-ing-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="onDeleteIngredient(currentIngrendient?.id!)" type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Add-->
+<div class="modal fade" id="addIngModal" tabindex="-1" role="dialog" aria-labelledby="addIngModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addIngModalLabel">Add dish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form #addForm="ngForm" (ngSubmit)="onAddIngredient(addForm)">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" ngModel name="name" class="form-control"
+                   id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input type="text" ngModel name="type" class="form-control"
+                   id="type" placeholder="Type" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-ing-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new ingredient</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="ingredients">
+  <div class="container" id="main-container">
+    <div class="text-center mb-5">
+      <h5 class="text-primary h6">Diets</h5>
+      <h2 class="display-20 display-md-18 display-lg-16"></h2>
+    </div>
+    <div class="row">
+      <!-- each dish gets its own container -->
+      <div *ngFor="let ing of ingredientList" class="col-lg-4 col-md-6 mb-2-6">
+        {{ing.name}} <a class="button" href="/ingredients#" (click)="onOpenModal(ing, 'edit')">edit</a> |
+        <a class="button" href="/ingredients#" (click)="onOpenModal(ing, 'delete')">delete</a>
+      </div>
+    </div>
+  </div>
+</section>

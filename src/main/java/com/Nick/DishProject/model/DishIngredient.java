@@ -21,6 +21,7 @@ public class DishIngredient {
     private Dish dish;
 
     @ManyToOne(cascade = CascadeType.MERGE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @MapsId("ingredientId")
     private Ingredient ingredient;
 

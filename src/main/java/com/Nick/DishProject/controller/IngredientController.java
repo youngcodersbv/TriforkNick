@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,20 @@ public class IngredientController {
     public ResponseEntity<Ingredient> addDiet(@RequestBody Ingredient ingredient) {
         Ingredient newIngredient = ingredientService.addIngredient(ingredient);
         return new ResponseEntity<>(newIngredient,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    @Transactional
+    public ResponseEntity<Ingredient> updateIngredient(@RequestBody Ingredient ingredient) {
+        Ingredient newIngredient = ingredientService.updateIngredient(ingredient);
+        return new ResponseEntity<>(newIngredient, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteIngredientById(@PathVariable("id")Long id) {
+        ingredientService.deleteIngredientById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

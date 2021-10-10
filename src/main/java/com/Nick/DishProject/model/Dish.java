@@ -46,18 +46,32 @@ public class Dish {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<DishIngredient> ingredients = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+                    {
+                            CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.REFRESH
+                    })
     @JoinTable(
             name = "dish_diet",
             joinColumns = @JoinColumn(name="dish_id"),
             inverseJoinColumns = @JoinColumn(name="diet_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Diet> diets;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+                    {
+                            CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.REFRESH
+                    })
     @JoinTable(
             name = "dish_category",
             joinColumns = @JoinColumn(name="dish_id"),
             inverseJoinColumns = @JoinColumn(name="category_id"))
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Category> categories;
 
     public Long getId() {
