@@ -49,6 +49,9 @@ public class DishService {
     }
 
     public List<Dish> findAllFilteredDishes(List<String> categories, List<String> diets) {
+        if(categories == null) categories = new ArrayList<>();
+        if(diets == null) diets = new ArrayList<>();
+
         List<Dish> dishes = new ArrayList<>();
         List<Dish> allDishes = findAllDishes();
         allDishes.stream()
