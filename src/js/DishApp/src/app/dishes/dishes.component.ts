@@ -10,7 +10,7 @@ import {IngredientService} from "../ingredient.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {NgForm} from "@angular/forms";
 import {FilterList} from "./filterList";
-import {filter} from "rxjs/operators";
+import {resolve} from "@angular/compiler-cli/src/ngtsc/file_system";
 
 @Component({
   selector: 'app-dishes',
@@ -29,6 +29,10 @@ export class DishesComponent implements OnInit {
 
   public deleteDish!: Dish;
   public currentDish!: Dish;
+
+  public selectedFile!: File;
+
+  public imageBase64: any;
 
   constructor(private dishService: DishService,
               private dietService: DietService,
@@ -203,6 +207,16 @@ export class DishesComponent implements OnInit {
     }
   }
 
+  public onFileChanged(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if(fileList) {
+      this.selectedFile = fileList[0];
+      console.log(this.selectedFile.name);
+    }
+    this.encodeImageFileAsURL(this.selectedFile);
+  }
+
   public onFilterDishes(filterForm: NgForm): void {
     filterForm.controls['diets'].setValue(this.getFilterDiets());
     filterForm.controls['categories'].setValue(this.getFilterCategories());
@@ -228,11 +242,35 @@ export class DishesComponent implements OnInit {
     });
   }
 
+  public encodeImageFileAsURL(element: any) {
+    let base64 = "";
+    var file = element;
+    const promise = new Promise((resolve) => {
+      var reader = new FileReader();
+      reader.onload = function () {
+        resolve(base64 = reader.result as string)};
+
+      reader.readAsDataURL(file);
+    });
+
+    promise.then(() => {
+      console.log("out");
+      console.log(base64);
+
+
+      this.imageBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, "");
+    });
+  }
+
   public onAddDish(addForm: NgForm): void {
     console.log(this.amount);
     addForm.controls['diets'].setValue(this.getSelectedDiets());
     addForm.controls['categories'].setValue(this.getSelectedCategories());
     addForm.controls['ingredients'].setValue(this.getSelectedIngredients());
+
+    console.log(this.imageBase64);
+
+    addForm.controls['image'].setValue(this.imageBase64);
 
     let ingredients: Ingredient[] = addForm.controls['ingredients'].value;
 

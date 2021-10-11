@@ -159,7 +159,7 @@ class DishServiceTest {
         dish.setWarm(true);
         dish.setCategories(categories);
         dish.setRating(10);
-        dish.setImgPath("");
+        dish.setImage("");
         dish.setLongDescription("Definitely definitely something");
         return dish;
     }
@@ -183,7 +183,7 @@ class DishServiceTest {
         dish.setWarm(true);
         dish.setCategories(categories);
         dish.setRating(10);
-        dish.setImgPath("");
+        dish.setImage("");
         dish.setLongDescription("Definitely definitely something");
         return dish;
     }

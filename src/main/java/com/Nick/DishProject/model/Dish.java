@@ -1,16 +1,14 @@
 package com.Nick.DishProject.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-@Entity
+@Entity(name="Dish")
 @Table(name = "dish", schema="public")
 public class Dish {
 
@@ -33,8 +31,9 @@ public class Dish {
     @Column(nullable = false)
     private boolean warm;
 
+    @Lob
     @Column
-    private String imgPath;
+    private String image;
 
     @Column
     private String description;
@@ -45,6 +44,8 @@ public class Dish {
     @OneToMany(mappedBy = "dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<DishIngredient> ingredients = new HashSet<>();
+
+
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade =
@@ -142,12 +143,12 @@ public class Dish {
         this.diets = diets;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getDescription() {
@@ -165,6 +166,8 @@ public class Dish {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
+
+
 
     public boolean hasType(Category category) {
         for(Category c : categories) {

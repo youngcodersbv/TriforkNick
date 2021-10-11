@@ -157,9 +157,9 @@
                    id="descriptionEdit" placeholder="Tasty." required>
           </div>
           <div class="form-group">
-            <label for="imgPathEdit">Image upload placeholder</label>
-            <input type="text" [(ngModel)]="currentDish?.imgPath!" name="imgPath" class="form-control"
-                   id="imgPathEdit" placeholder="Your image here." >
+            <label for="imageEdit">Image upload placeholder</label>
+            <input type="text" [(ngModel)]="currentDish?.image!" name="image" class="form-control"
+                   id="imageEdit" placeholder="Your image here." >
           </div>
           <div class="form-group">
             <label for="longDescriptionEdit">Long description</label>
@@ -300,11 +300,19 @@
             <input type="text" ngModel name="description" class="form-control"
                    id="description" placeholder="Tasty." required>
           </div>
+
+
+          <input type="text" ngModel name="image" class="form-control" hidden>
           <div class="form-group">
-            <label for="imgPath">Image upload placeholder</label>
-            <input type="text" ngModel name="imgPath" class="form-control"
-                   id="imgPath" placeholder="Your image here.">
+            <label for="image" *ngIf="selectedFile == null"><p>Upload image</p></label>
+            <label for="image" *ngIf="selectedFile != null"><p>{{selectedFile.name}}</p></label>
+
+            <input style="display: none" #fileInput
+              id="image" type="file" accept="image/"
+                   (change)="onFileChanged($event)" >
+            <button (click)="fileInput.click()" type="button"> Select File</button>
           </div>
+
           <div class="form-group">
             <label for="longDescription">Long description</label>
             <textarea ngModel name="longDescription" class="form-control"
@@ -342,7 +350,7 @@
           </div>
 
           <input type="text" ngModel name="ingredients" class="form-control" hidden>
-          <input type="text" ngModel name="amount" class="form-control" hidden>
+          <input type="hidden" ngModel name="amount" class="form-control" hidden>
           <div>
             <label for="lb-ingredients">Ingredients</label><br />
             <div class="cb-wrapper">
@@ -382,7 +390,7 @@
     <div *ngFor="let dish of dishesList" class="col-lg-4 col-md-6 mb-2-6">
       <article class="card card-style2">
         <div class="card-img">
-          <img class="rounded-top" src="{{dish?.imgPath}}" alt="...">
+          <img class="rounded-top" src="data:image/JPEG;base64,{{dish?.image}}" alt="...">
           <div class="date"><span>15</span>Sep</div>
         </div>
         <div class="card-body">

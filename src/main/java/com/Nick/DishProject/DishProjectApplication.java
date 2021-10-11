@@ -23,7 +23,7 @@ public class DishProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DishProjectApplication.class, args);
 	}
-
+/*
 	@Bean
 	public CommandLineRunner cmd(DishRepository dr, IngredientRepository ir,
 								 DishIngredientRepository dIr) {
@@ -56,6 +56,8 @@ public class DishProjectApplication {
 		});
 	}
 
+
+ */
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
