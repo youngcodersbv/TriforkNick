@@ -1,5 +1,5 @@
 <section class="sidebar">
-  <div class="filter"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="false" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
+  <div class="filter"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter"  aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
   </div>
     <div id="mobile-filter" class="collapse">
       <div>
@@ -156,11 +156,28 @@
             <input type="text" [(ngModel)]="currentDish?.description!" name="description" class="form-control"
                    id="descriptionEdit" placeholder="Tasty." required>
           </div>
+
+          <input type="text" ngModel name="image" class="form-control" hidden>
           <div class="form-group">
-            <label for="imageEdit">Image upload placeholder</label>
-            <input type="text" [(ngModel)]="currentDish?.image!" name="image" class="form-control"
-                   id="imageEdit" placeholder="Your image here." >
+            <label for="imageEdit" *ngIf="imageBase64 == null"><p>Upload image</p></label>
+            <label for="imageEdit" *ngIf="imageBase64 != null"><p>hello</p></label>
+
+            <input style="display: none" #fileInput
+                   id="imageEdit" type="file" accept="image/"
+                   (change)="onFileChanged($event)" >
+            <button (click)="fileInput.click()" type="button"> Select File</button>
           </div>
+          <label for="imageEdit" *ngIf="imageBase64 != null">
+            <div class="preview"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#preview-collapse-edit"  aria-controls="preview-collapse-edit">Preview</button>
+            </div>
+            <div id="preview-collapse-edit" class="collapse">
+              <img class="rounded-top" width="200px" height="150px"
+                   style="object-fit: contain"
+                   src="data:image/JPEG;base64,{{imageBase64}}" alt="...">
+            </div>
+          </label>
+
+
           <div class="form-group">
             <label for="longDescriptionEdit">Long description</label>
             <textarea [(ngModel)]="currentDish?.longDescription!" name="longDescription" class="form-control"
@@ -312,6 +329,15 @@
                    (change)="onFileChanged($event)" >
             <button (click)="fileInput.click()" type="button"> Select File</button>
           </div>
+          <label for="image" *ngIf="selectedFile != null">
+            <div class="preview"> <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#preview-collapse"  aria-controls="preview-collapse">Preview</button>
+            </div>
+            <div id="preview-collapse" class="collapse">
+              <img class="rounded-top" width="200px" height="150px"
+                   style="object-fit: contain"
+                   src="data:image/JPEG;base64,{{imageBase64}}" alt="...">
+            </div>
+          </label>
 
           <div class="form-group">
             <label for="longDescription">Long description</label>
@@ -390,8 +416,9 @@
     <div *ngFor="let dish of dishesList" class="col-lg-4 col-md-6 mb-2-6">
       <article class="card card-style2">
         <div class="card-img">
-          <img class="rounded-top" src="data:image/JPEG;base64,{{dish?.image}}" alt="...">
-          <div class="date"><span>15</span>Sep</div>
+          <img class="rounded-top" width="350px" height="300px"
+               style="object-fit: contain"
+               src="data:image/JPEG;base64,{{dish?.image}}" alt="...">
         </div>
         <div class="card-body">
           <h3 class="h5"><a href="/dishes#" (click)="onOpenModal(dish, 'view')">{{dish?.name}}</a></h3>

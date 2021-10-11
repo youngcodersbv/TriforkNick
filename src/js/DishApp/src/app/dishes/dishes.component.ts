@@ -381,6 +381,10 @@ export class DishesComponent implements OnInit {
     updateForm.controls['categories'].setValue(this.getSelectedCategories());
     updateForm.controls['ingredients'].setValue(this.getSelectedIngredients());
 
+    console.log(this.imageBase64);
+
+    updateForm.controls['image'].setValue(this.imageBase64);
+
     console.log(updateForm.value);
 
     if (dishForm != null) {
@@ -419,6 +423,9 @@ export class DishesComponent implements OnInit {
       this.updateInitSelectedDiets();
       this.updateInitSelectedIngredients();
 
+      this.imageBase64 = dish.image;
+
+      console.log(this.imageBase64);
       console.log(this.dietsList);
 
       button.setAttribute('data-target', '#editDishModal');

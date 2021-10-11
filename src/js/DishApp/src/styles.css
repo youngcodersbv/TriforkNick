@@ -15,7 +15,7 @@ body{margin-top:20px;}
   display: block;
   background: #ffffff;
   overflow: hidden;
-  border-radius: 0.25rem;
+  border-radius: 1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
