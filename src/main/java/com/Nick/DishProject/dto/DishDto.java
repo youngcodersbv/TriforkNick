@@ -3,7 +3,6 @@ package com.Nick.DishProject.dto;
 import com.Nick.DishProject.model.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DishDto {
@@ -14,7 +13,7 @@ public class DishDto {
     private int calories;
     private int rating;
     private boolean warm;
-    private String imgPath;
+    private String image;
     private String description;
     private String longDescription;
     private Set<Ingredient> ingredients;
@@ -31,7 +30,7 @@ public class DishDto {
         this.calories=dish.getCalories();
         this.rating = dish.getRating();
         this.warm = dish.isWarm();
-        this.imgPath=dish.getImgPath();
+        this.image =dish.getImage();
         this.description=dish.getDescription();
         this.longDescription=dish.getLongDescription();
         this.diets=dish.getDiets();
@@ -55,7 +54,7 @@ public class DishDto {
         dish.setCalories(this.calories);
         dish.setRating(this.rating);
         dish.setWarm(this.warm);
-        dish.setImgPath(this.imgPath);
+        dish.setImage(this.image);
         dish.setDescription(this.description);
         dish.setLongDescription(this.longDescription);
         dish.setDiets(this.diets);
@@ -120,12 +119,12 @@ public class DishDto {
         this.warm = warm;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public String getImage() {
+        return image;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getDescription() {

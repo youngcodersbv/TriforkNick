@@ -11,7 +11,7 @@ export interface Dish {
   warm: boolean;
   description: string;
   longDescription: string;
-  imgPath: string;
+  image: string;
   categories: Category[];
   diets: Diet[];
   ingredients: Ingredient[];

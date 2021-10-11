@@ -122,7 +122,9 @@ public class DishController {
     @Transactional
     public ResponseEntity<Dish> addDishDto(@RequestBody DishDto dishDto) {
 
-        System.out.println(dishDto.getAmount());
+        if(dishDto.getAmount() != null) {
+            System.out.println(dishDto.getAmount());
+        }
 
         Dish dish = dishDto.createDish();
         Set<Ingredient> ingredient = dishDto.getIngredients();
@@ -139,6 +141,8 @@ public class DishController {
 
                 dish.getIngredients().add(dI);
                 i.getDishes().add(dI);
+
+                //Todo: Add amount needed to dI per correct ingredient
 
                 //dI.setAmountNeeded(dishDto.getAmountNeeded());
 
