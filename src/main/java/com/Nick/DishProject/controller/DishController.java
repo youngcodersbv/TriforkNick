@@ -122,6 +122,8 @@ public class DishController {
     @Transactional
     public ResponseEntity<Dish> addDishDto(@RequestBody DishDto dishDto) {
 
+        System.out.println(dishDto.getAmount());
+
         Dish dish = dishDto.createDish();
         Set<Ingredient> ingredient = dishDto.getIngredients();
 
