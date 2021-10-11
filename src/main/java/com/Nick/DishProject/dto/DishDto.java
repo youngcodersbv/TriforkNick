@@ -3,6 +3,7 @@ package com.Nick.DishProject.dto;
 import com.Nick.DishProject.model.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DishDto {
@@ -17,7 +18,7 @@ public class DishDto {
     private String description;
     private String longDescription;
     private Set<Ingredient> ingredients;
-    private int[] amountNeeded;
+    private Set<Integer> amount;
     private Set<Diet> diets;
     private Set<Category> categories;
 
@@ -67,12 +68,12 @@ public class DishDto {
         return id;
     }
 
-    public int[] getAmountNeeded() {
-        return amountNeeded;
+    public Set<Integer> getAmount() {
+        return amount;
     }
 
-    public void setAmountNeeded(int[] amountNeeded) {
-        this.amountNeeded = amountNeeded;
+    public void setAmount(Set<Integer> amount) {
+        this.amount = amount;
     }
 
     public void setId(Long id) {

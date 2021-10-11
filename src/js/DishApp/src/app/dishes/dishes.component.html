@@ -343,6 +343,7 @@
           </div>
 
           <input type="text" ngModel name="ingredients" class="form-control" hidden>
+          <input type="text" ngModel name="amount" class="form-control" hidden>
           <div>
             <label for="lb-ingredients">Ingredients</label><br />
             <div class="cb-wrapper">
@@ -354,7 +355,7 @@
                 {{ingredientList[index].name.toLocaleLowerCase()}}
                 <div *ngIf="ingredientList[index].selected">
                   <label for="ingredientAmount"></label>
-                  <input type="text" [(ngModel)]="amount" name="iia{{index}}"  class="form-control"
+                  <input type="number" [(ngModel)]="amount" name="iia{{ingredientList[index].id}}"  class="form-control"
                          id="ingredientAmount" placeholder="1" [defaultValue]="1" required>
                 </div>
               </label>
