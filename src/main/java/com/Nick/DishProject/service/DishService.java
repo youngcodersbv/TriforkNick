@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -69,12 +70,12 @@ public class DishService {
         }
         if(!categories.isEmpty()) {
             if (dish.getCategories().stream()
-                    .filter(cat -> categories.contains(cat.getType()))
+                    .filter(cat -> categories.contains(cat.getType().toUpperCase(Locale.ROOT)))
                     .collect(Collectors.toList()).isEmpty()) return false;
 ;        }
         if(!diets.isEmpty()) {
             if(dish.getDiets().stream()
-                    .filter(diet -> diets.contains(diet.getType()))
+                    .filter(diet -> diets.contains(diet.getType().toUpperCase(Locale.ROOT)))
                     .collect(Collectors.toList()).isEmpty()) return false;
         }
         return true;

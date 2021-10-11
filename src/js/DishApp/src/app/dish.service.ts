@@ -29,7 +29,8 @@ export class DishService{
       dietParams += "diet="+d+"&";
     }
     let url = `${this.apiServerUrl}/dish/all?${catParams}${dietParams}`;
-    url.slice(url.length-1,url.length);
+    url = url.slice(0,url.length-1);
+    console.log(url);
     return this.http.get<Dish[]>(url);
   }
 
