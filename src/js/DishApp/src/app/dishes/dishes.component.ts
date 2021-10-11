@@ -234,6 +234,20 @@ export class DishesComponent implements OnInit {
     addForm.controls['categories'].setValue(this.getSelectedCategories());
     addForm.controls['ingredients'].setValue(this.getSelectedIngredients());
 
+    let ingredients: Ingredient[] = addForm.controls['ingredients'].value;
+
+    this.amount = [];
+
+    console.log('entering');
+    for(var ing of ingredients) {
+      console.log('iia'+ing.id);
+      console.log(addForm.controls['iia'+ing.id].value);
+      this.amount.push(ing.id);
+      this.amount.push(addForm.controls['iia'+ing.id].value);
+    }
+    console.log(this.amount);
+    addForm.controls['amount'].setValue(this.amount);
+
     const dishForm = document.getElementById('add-dish-form');
     if (dishForm != null) {
       dishForm.click();
@@ -246,6 +260,7 @@ export class DishesComponent implements OnInit {
         this.wipeSelectedDiets();
         this.wipeSelectedCategories();
         this.wipeSelectedIngredients();
+        this.amount = [];
         addForm.reset();
         this.getDishes();
       },
