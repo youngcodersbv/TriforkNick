@@ -2,6 +2,7 @@ package com.Nick.DishProject.controller;
 
 import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Diet;
+import com.Nick.DishProject.model.Ingredient;
 import com.Nick.DishProject.service.CategoryService;
 import com.Nick.DishProject.service.DietService;
 import com.Nick.DishProject.service.IngredientService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -31,5 +33,19 @@ public class CategoryController {
     public ResponseEntity<Category> addDiet(@RequestBody Category category) {
         Category newCategory = categoryService.addCategory(category);
         return new ResponseEntity<>(newCategory,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update")
+    @Transactional
+    public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
+        Category newCategory = categoryService.updateCategory(category);
+        return new ResponseEntity<>(newCategory, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<?> deleteCategoryById(@PathVariable("id")Long id) {
+        categoryService.deleteCategoryById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

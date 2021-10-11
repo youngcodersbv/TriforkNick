@@ -24,7 +24,8 @@ import { CategoriesComponent } from './categories/categories.component';
     FormsModule,
     RouterModule.forRoot([{path: 'dishes', component: DishesComponent},
                                 {path: 'diets', component: DietsComponent},
-                                {path: 'ingredients', component: IngredientsComponent}
+                                {path: 'ingredients', component: IngredientsComponent},
+                                {path: 'categories', component: CategoriesComponent}
     ]),
   ],
   providers: [],
