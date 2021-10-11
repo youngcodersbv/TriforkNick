@@ -1,1 +1,130 @@
-<p>categories works!</p>
+<div>
+  <a class="button" href="/categories#" (click)="onOpenModal(null!, 'add')">Add Category</a>
+</div>
+
+<!-- Modal Category View -->
+<div class="modal fade " id="viewCatModal" tabindex="-1" role="dialog" aria-labelledby="viewCatModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCatModalLabel">{{currentCategory?.type}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="jasmine-title">
+          <h1>{{currentCategory?.type}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Edit -->
+<div class="modal fade" id="editCatModal" tabindex="-1" role="dialog" aria-labelledby="editCatModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCatModalLabel">Edit category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <!--//TODO: Dish edit fields -->
+
+        <form #updateForm="ngForm" (ngSubmit)="onUpdateCategory(updateForm)">
+          <div class="form-group">
+            <div class="idHidden">
+              <label for="idEdit"></label>
+              <input type="text" [(ngModel)]="currentCategory?.id!" name="id" class="form-control"
+                     id="idEdit">
+            </div>
+            <div class="form-group">
+              <label for="typeEdit">Type</label>
+              <input type="text" [(ngModel)]="currentCategory?.type!" class="form-control"
+                     id="typeEdit" name="type" placeholder="Type" required>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="update-cat-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="updateForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Delete-->
+<div class="modal fade" id="deleteCatModal" tabindex="-1" role="dialog" aria-labelledby="deleteCatModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCatModalLabel">Delete category </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        Are you sure you want to delete the dish "{{currentCategory?.type!}}" ?
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="delete-cat-form" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button (click)="onDeleteCategory(currentCategory?.id!)" type="button" class="btn btn-danger">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ingredient Add-->
+<div class="modal fade" id="addCatModal" tabindex="-1" role="dialog" aria-labelledby="addCatModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addIngModalLabel">Add category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form #addForm="ngForm" (ngSubmit)="onAddCategory(addForm)">
+          <div class="form-group">
+            <label for="type">Type</label>
+            <input type="text" ngModel name="type" class="form-control"
+                   id="type" placeholder="Type" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-cat-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save new category</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="ingredients">
+  <div class="container" id="main-container">
+    <div class="text-center mb-5">
+      <h5 class="text-primary h6">Categories</h5>
+      <h2 class="display-20 display-md-18 display-lg-16"></h2>
+    </div>
+    <div class="row">
+      <!-- each dish gets its own container -->
+      <div *ngFor="let cat of categoriesList" class="col-lg-4 col-md-6 mb-2-6">
+        {{cat.type}} <a class="button" href="/categories#" (click)="onOpenModal(cat, 'edit')">edit</a> |
+        <a class="button" href="/categories#" (click)="onOpenModal(cat, 'delete')">delete</a>
+      </div>
+    </div>
+  </div>
+</section>
