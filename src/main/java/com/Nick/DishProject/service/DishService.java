@@ -1,8 +1,6 @@
 package com.Nick.DishProject.service;
 
 import com.Nick.DishProject.exception.DishNotFoundException;
-import com.Nick.DishProject.model.Category;
-import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,33 +16,34 @@ import java.util.stream.StreamSupport;
 @Service
 public class DishService {
 
-    private final DishRepository dietRepository;
+    private final DishRepository dishRepository;
+    private final DishIngredientService dishIngredientService;
 
     @Autowired
-    public DishService(DishRepository dishRepo) {
-        this.dietRepository =dishRepo;
+    public DishService(DishRepository dishRepo, DishIngredientService dishIngredientService) {
+        this.dishRepository =dishRepo;
+        this.dishIngredientService = dishIngredientService;
     }
 
-
     public Dish findDishById(Long id) {
-        return dietRepository.findDishById(id).orElseThrow(() -> new DishNotFoundException("Dish by id "+id+" was not found."));
+        return dishRepository.findDishById(id).orElseThrow(() -> new DishNotFoundException("Dish by id "+id+" was not found."));
     }
 
     public Dish addDish(Dish dish) {
-        return dietRepository.save(dish);
+        return dishRepository.save(dish);
     }
 
     public Dish updateDish(Dish dish) {
-        return dietRepository.save(dish);
+        return dishRepository.save(dish);
     }
 
     public void deleteDishById(Long id) {
-        dietRepository.deleteDishById(id);
+        dishRepository.deleteDishById(id);
     }
 
     public List<Dish> findAllDishes() {
         return StreamSupport
-                .stream(dietRepository.findAll().spliterator(),false)
+                .stream(dishRepository.findAll().spliterator(),false)
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,8 @@
 package com.Nick.DishProject.model;
 
+import com.Nick.DishProject.exception.DishIngredientNotFoundException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,23 +22,25 @@ public class DishIngredient {
     @MapsId("dishId")
     private Dish dish;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @MapsId("ingredientId")
     private Ingredient ingredient;
 
     @Column(nullable = false)
-    private int amountNeeded;
+    private String amountNeeded;
 
     public DishIngredientId getId() {
         return id;
     }
 
-    public int getAmountNeeded() {
+    public void setId(DishIngredientId id) { this.id = id; }
+
+    public String getAmountNeeded() {
         return amountNeeded;
     }
 
-    public void setAmountNeeded(int amountNeeded) {
+    public void setAmountNeeded(String amountNeeded) {
         this.amountNeeded = amountNeeded;
     }
 

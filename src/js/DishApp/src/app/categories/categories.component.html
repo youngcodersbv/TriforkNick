@@ -120,7 +120,6 @@
       <h2 class="display-20 display-md-18 display-lg-16"></h2>
     </div>
     <div class="row">
-      <!-- each dish gets its own container -->
       <div *ngFor="let cat of categoriesList" class="col-lg-4 col-md-6 mb-2-6">
         {{cat.type}} <a class="button" href="/categories#" (click)="onOpenModal(cat, 'edit')">edit</a> |
         <a class="button" href="/categories#" (click)="onOpenModal(cat, 'delete')">delete</a>
