@@ -25,7 +25,15 @@ export class DishesComponent implements OnInit {
   public ingredientList: Ingredient[] = [];
   public filterList!: FilterList;
 
-  public amount: number[] = [];
+  public currentModal!: string;
+
+  public amount: {
+    ing: number[];
+    am: number[];
+  } = {
+    ing: [],
+    am: [],
+  };
 
   public deleteDish!: Dish;
   public currentDish!: Dish;
@@ -165,6 +173,10 @@ export class DishesComponent implements OnInit {
           }
         }
         this.ingredientList = response;
+
+        console.log(this.currentDish.amount);
+        for(let ingredient of response) {
+        }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -274,22 +286,25 @@ export class DishesComponent implements OnInit {
 
     let ingredients: Ingredient[] = addForm.controls['ingredients'].value;
 
-    this.amount = [];
+    this.amount = {ing:[],am:[]};
 
     console.log('entering');
     for(var ing of ingredients) {
       console.log('iia'+ing.id);
       console.log(addForm.controls['iia'+ing.id].value);
-      this.amount.push(ing.id);
-      this.amount.push(addForm.controls['iia'+ing.id].value);
+      this.amount.ing.push(ing.id);
+      this.amount.am.push(addForm.controls['iia'+ing.id].value);
     }
     console.log(this.amount);
+
     addForm.controls['amount'].setValue(this.amount);
 
     const dishForm = document.getElementById('add-dish-form');
     if (dishForm != null) {
       dishForm.click();
     }
+
+
     console.log(addForm.value);
 
     this.dishService.addDishDto(addForm.value).subscribe(
@@ -298,8 +313,12 @@ export class DishesComponent implements OnInit {
         this.wipeSelectedDiets();
         this.wipeSelectedCategories();
         this.wipeSelectedIngredients();
-        this.amount = [];
+        this.amount = {
+          ing: [],
+          am: []
+        };
         addForm.reset();
+        this.currentModal='';
         this.getDishes();
       },
       (error: HttpErrorResponse) => {
@@ -385,6 +404,21 @@ export class DishesComponent implements OnInit {
 
     updateForm.controls['image'].setValue(this.imageBase64);
 
+    let ingredients: Ingredient[] = updateForm.controls['ingredients'].value;
+
+    this.amount = {ing:[],am:[]};
+
+    console.log('entering');
+    for(var ing of ingredients) {
+      console.log('iie'+ing.id);
+      console.log(updateForm.controls['iie'+ing.id].value);
+      this.amount.ing.push(ing.id);
+      this.amount.am.push(updateForm.controls['iie'+ing.id].value);
+    }
+    console.log(this.amount);
+
+    updateForm.controls['amount'].setValue(this.amount);
+
     console.log(updateForm.value);
 
     if (dishForm != null) {
@@ -396,6 +430,11 @@ export class DishesComponent implements OnInit {
         this.wipeSelectedDiets();
         this.wipeSelectedCategories();
         this.wipeSelectedIngredients();
+        this.amount = {
+          ing: [],
+          am: []
+        };
+        this.currentModal='';
         this.getDishes();
       },
       (error: HttpErrorResponse) => {
@@ -410,6 +449,7 @@ export class DishesComponent implements OnInit {
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
+      this.currentModal='add';
       this.getDiets();
       this.getIngredients();
       this.getCategories();
@@ -418,6 +458,7 @@ export class DishesComponent implements OnInit {
     if (mode === 'edit') {
       this.currentDish = dish;
 
+      this.currentModal='edit';
 
       this.updateInitSelectedCategories();
       this.updateInitSelectedDiets();

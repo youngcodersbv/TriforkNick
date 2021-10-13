@@ -1,6 +1,7 @@
 package com.Nick.DishProject.service;
 
 import com.Nick.DishProject.exception.CategoryNotFoundException;
+import com.Nick.DishProject.exception.DishIngredientNotFoundException;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.model.DishIngredient;
 import com.Nick.DishProject.model.DishIngredientId;
@@ -23,7 +24,7 @@ public class DishIngredientService {
     }
 
     public DishIngredient findDishIngredientById(DishIngredientId id) {
-        return dishIngredientRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Diet by id "+id+" was not found."));
+        return dishIngredientRepository.findById(id).orElseThrow(() -> new DishIngredientNotFoundException("DishIng by id "+id+" was not found."));
     }
 
     public DishIngredient addDishIngredient(DishIngredient dishIngredient) {
