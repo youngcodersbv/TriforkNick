@@ -165,8 +165,6 @@ public class DishController {
         dishDto.setIngredients(ingredients);
         dishDto.setAmount(amount);
 
-        System.out.println(dishDto.getAmount().getIng());
-        System.out.println(dishDto.getAmount().getAm());
         return dishDto;
     }
 
@@ -194,8 +192,6 @@ public class DishController {
 
                 String amount = "";
 
-                System.out.println("hello");
-
 
                 loop:for (int i = 0;i<dishDto.getAmount().getIng().size();i++ ) {
                     if(dishDto.getAmount().getIng().get(i) == ingredient.getId().intValue()) {
@@ -214,7 +210,6 @@ public class DishController {
 
             }
         }
-        System.out.println(dish);
         return dish;
     }
 
