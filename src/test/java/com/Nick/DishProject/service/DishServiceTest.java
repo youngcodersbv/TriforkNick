@@ -1,9 +1,11 @@
 package com.Nick.DishProject.service;
 
+import com.Nick.DishProject.exception.DishNotFoundException;
 import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -11,10 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.Nick.DishProject.testUtil.ObjectInstantiationUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -159,5 +158,34 @@ class DishServiceTest {
 
         List<Dish> result = dishService.findAllFilteredDishes(null, q);
         assertThat(dishes.size() == 1);
+    }
+
+    @Test
+    void findDishById_ReturnsDishById() {
+        Dish dish = createDish(null,null,"Ay");
+        dish.setId(1L);
+
+        Optional<Dish> optionalDish = Optional.of(dish);
+
+        when(dishRepository.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(optionalDish);
+
+        Dish fetchedDish = dishService.findDishById(1L);
+
+        assertThat(fetchedDish.getId()).isSameAs(dish.getId());
+        verify(dishRepository,times(1)).findDishById(1L);
+    }
+
+    @Test
+    void findDishById_DoesNotExistThrowsException() {
+        Dish dish = createDish(null, null, "Ay");
+        dish.setId(1L);
+
+        Optional<Dish> optionalDish = Optional.empty();
+
+        when(dishRepository.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(optionalDish);
+
+        Assertions.assertThrows(DishNotFoundException.class, () -> {
+           dishService.findDishById(1L);
+        });
     }
 }
