@@ -23,7 +23,6 @@ export class DishesComponent implements OnInit {
   public dietsList: Diet[] = [];
   public categoryList: Category[] = [];
   public ingredientList: Ingredient[] = [];
-  public filterList!: FilterList;
 
   public currentModal!: string;
 
@@ -54,10 +53,6 @@ export class DishesComponent implements OnInit {
     this.getDiets();
     this.getCategories();
     this.getIngredients();
-    this.filterList = new class implements FilterList {
-      categories: Category[] = [];
-      diets: Diet[] = [];
-    }
   }
 
   public getDiets(): void {
@@ -100,6 +95,8 @@ export class DishesComponent implements OnInit {
       });
   }
 
+
+  //flips values true/false of variable
   public onUpdateSelectedIngredient(value: Ingredient) {
     if (value.selected) {
       value.selected = false;
@@ -124,73 +121,38 @@ export class DishesComponent implements OnInit {
     }
   }
 
+  //inits the state of checkboxes by currentDish
   public updateInitSelectedDiets() {
-    this.dietService.getDiets().subscribe(
-      (response: Diet[]) => {
-        for (let i = 0; i < response.length; ++i) {
-          for (let j = 0; j < this.currentDish.diets.length; j++) {
-            if (response[i].id == this.currentDish.diets[j].id) {
-              response[i].selected = true;
-              this.currentDish.diets[j].selected = true;
-            }
-          }
+    for(let diet of this.dietsList) {
+      this.currentDish.diets.forEach(value => {
+        if(value.id == diet.id) {
+          diet.selected=true;
         }
-        this.dietsList = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
       });
-  }
-
-  public updateInitSelectedCategories() {
-    this.categoryService.getCategories().subscribe(
-      (response: Category[]) => {
-        for (let i = 0; i < response.length; ++i) {
-          for (let j = 0; j < this.currentDish.categories.length; j++) {
-            if (response[i].id == this.currentDish.categories[j].id) {
-              response[i].selected = true;
-              this.currentDish.categories[j].selected = true;
-            }
-          }
-        }
-        this.categoryList = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-  }
-
-  public updateInitSelectedIngredients() {
-
-    this.ingredientService.getIngredients().subscribe(
-      (response: Ingredient[]) => {
-        for (let i = 0; i < response.length; ++i) {
-          for (let j = 0; j < this.currentDish.ingredients.length; j++) {
-            if (response[i].id == this.currentDish.ingredients[j].id) {
-              response[i].selected = true;
-              this.currentDish.ingredients[j].selected = true;
-            }
-          }
-        }
-        this.ingredientList = response;
-
-        console.log(this.currentDish.amount);
-        for(let ingredient of response) {
-        }
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      });
-  }
-
-  public onFilterSelectedCategory(category:Category): void {
-    if (category.selectedFilter) {
-      category.selectedFilter = false;
-    } else {
-      category.selectedFilter = true;
     }
   }
 
+  public updateInitSelectedCategories() {
+    for(let category of this.categoryList) {
+      this.currentDish.categories.forEach(value => {
+        if(value.id == category.id) {
+          category.selected=true;
+        }
+      });
+    }
+  }
+
+  public updateInitSelectedIngredients() {
+    for(let ingredient of this.ingredientList) {
+      this.currentDish.ingredients.forEach(value => {
+        if(value.id == ingredient.id) {
+          ingredient.selected=true;
+        }
+      });
+    }
+  }
+
+  //gets to be filtered values
   public getFilterCategories(): Category[] {
     var res: Category[] = [];
     for(let i = 0; i<this.categoryList.length; ++i) {
@@ -211,6 +173,15 @@ export class DishesComponent implements OnInit {
     return res;
   }
 
+  //flips selected filter true/falseS
+  public onFilterSelectedCategory(category:Category): void {
+    if (category.selectedFilter) {
+      category.selectedFilter = false;
+    } else {
+      category.selectedFilter = true;
+    }
+  }
+
   public onFilterSelectedDiet(diet: Diet): void {
     if(diet.selectedFilter) {
       diet.selectedFilter = false;
@@ -219,30 +190,14 @@ export class DishesComponent implements OnInit {
     }
   }
 
-  public onFileChanged(event: Event) {
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if(fileList) {
-      this.selectedFile = fileList[0];
-      console.log(this.selectedFile.name);
-    }
-    this.encodeImageFileAsURL(this.selectedFile);
-  }
+  //Returns filtered list
+  public onFilterDishes(): void {
 
-  public onFilterDishes(filterForm: NgForm): void {
-    filterForm.controls['diets'].setValue(this.getFilterDiets());
-    filterForm.controls['categories'].setValue(this.getFilterCategories());
-
-    this.filterList.diets = filterForm.controls['diets'].value;
-    this.filterList.categories = filterForm.controls['categories'].value;
-
-    console.log(this.filterList);
     var diets: string[] = [];
     var categories: string[] = [];
 
-    this.filterList.categories.forEach(category => categories.push(category.type));
-    this.filterList.diets.forEach(diet => diets.push(diet.type));
-
+    this.getFilterCategories().forEach(category => categories.push(category.type));
+    this.getFilterDiets().forEach(diet => diets.push(diet.type));
 
     this.dishService.getDishesFiltered(categories, diets).subscribe(
       (response: Dish[]) => {
@@ -251,36 +206,94 @@ export class DishesComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
-    });
+      });
   }
 
-  public encodeImageFileAsURL(element: any) {
+  //Image handling: immediately converts to Base64 on attachment
+  public onFileChanged(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if(fileList) {
+      this.selectedFile = fileList[0];
+    }
+    this.encodeImageFileAsBase64(this.selectedFile);
+  }
+
+  public encodeImageFileAsBase64(element: any) {
     let base64 = "";
     var file = element;
     const promise = new Promise((resolve) => {
       var reader = new FileReader();
       reader.onload = function () {
         resolve(base64 = reader.result as string)};
-
       reader.readAsDataURL(file);
     });
-
     promise.then(() => {
-      console.log("out");
-      console.log(base64);
-
-
       this.imageBase64 = base64.replace(/^data:image\/[a-z]+;base64,/, "");
     });
   }
 
+  public onClose() {
+
+  }
+
+  //Gets selected by checkbox things (used during adding/updating to pass
+  //                                  selected data into form).
+  public getSelectedDiets(): Diet[] {
+    var res: Diet[] = [];
+    for (let i = 0; i < this.dietsList.length; ++i) {
+      if (this.dietsList[i].selected) {
+        res.push(this.dietsList[i]);
+      }
+    }
+    return res;
+  }
+
+  public getSelectedCategories(): Category[] {
+    var res: Category[] = [];
+    for (let i = 0; i < this.categoryList.length; ++i) {
+      if (this.categoryList[i].selected) {
+        res.push(this.categoryList[i]);
+      }
+    }
+    return res;
+  }
+
+  public getSelectedIngredients(): Ingredient[] {
+    var res: Ingredient[] = [];
+    for (let i = 0; i < this.ingredientList.length; ++i) {
+      if (this.ingredientList[i].selected) {
+        res.push(this.ingredientList[i]);
+      }
+    }
+    return res;
+  }
+
+  //Resets the 'selected' variable back to false for fresh startup of form.
+  public wipeSelectedDiets() {
+    for (let i = 0; i < this.dietsList.length; ++i) {
+      this.dietsList[i].selected = false;
+    }
+  }
+
+  public wipeSelectedCategories() {
+    for (let i = 0; i < this.categoryList.length; ++i) {
+      this.categoryList[i].selected = false;
+    }
+  }
+
+  public wipeSelectedIngredients() {
+    for (let i = 0; i < this.ingredientList.length; ++i) {
+      this.ingredientList[i].selected = false;
+    }
+  }
+
+
   public onAddDish(addForm: NgForm): void {
-    console.log(this.amount);
+    //overrides the controls values of the form to pass in selected things
     addForm.controls['diets'].setValue(this.getSelectedDiets());
     addForm.controls['categories'].setValue(this.getSelectedCategories());
     addForm.controls['ingredients'].setValue(this.getSelectedIngredients());
-
-    console.log(this.imageBase64);
 
     addForm.controls['image'].setValue(this.imageBase64);
 
@@ -326,58 +339,6 @@ export class DishesComponent implements OnInit {
       });
   }
 
-  public onClose() {
-
-  }
-
-  public getSelectedDiets(): Diet[] {
-    var res: Diet[] = [];
-    for (let i = 0; i < this.dietsList.length; ++i) {
-      if (this.dietsList[i].selected) {
-        res.push(this.dietsList[i]);
-      }
-    }
-    return res;
-  }
-
-  public getSelectedCategories(): Category[] {
-    var res: Category[] = [];
-    for (let i = 0; i < this.categoryList.length; ++i) {
-      if (this.categoryList[i].selected) {
-        res.push(this.categoryList[i]);
-      }
-    }
-    return res;
-  }
-
-  public getSelectedIngredients(): Ingredient[] {
-    var res: Ingredient[] = [];
-    for (let i = 0; i < this.ingredientList.length; ++i) {
-      if (this.ingredientList[i].selected) {
-        res.push(this.ingredientList[i]);
-      }
-    }
-    return res;
-  }
-
-  public wipeSelectedDiets() {
-    for (let i = 0; i < this.dietsList.length; ++i) {
-      this.dietsList[i].selected = false;
-    }
-  }
-
-  public wipeSelectedCategories() {
-    for (let i = 0; i < this.categoryList.length; ++i) {
-      this.categoryList[i].selected = false;
-    }
-  }
-
-  public wipeSelectedIngredients() {
-    for (let i = 0; i < this.ingredientList.length; ++i) {
-      this.ingredientList[i].selected = false;
-    }
-  }
-
   public onDeleteDish(dishId: number): void {
     const dishForm = document.getElementById('delete-dish-form');
     if (dishForm != null) {
@@ -400,7 +361,7 @@ export class DishesComponent implements OnInit {
     updateForm.controls['categories'].setValue(this.getSelectedCategories());
     updateForm.controls['ingredients'].setValue(this.getSelectedIngredients());
 
-    console.log(this.imageBase64);
+
 
     updateForm.controls['image'].setValue(this.imageBase64);
 
@@ -450,24 +411,16 @@ export class DishesComponent implements OnInit {
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
       this.currentModal='add';
-      this.getDiets();
-      this.getIngredients();
-      this.getCategories();
       button.setAttribute('data-target', '#addDishModal');
     }
     if (mode === 'edit') {
       this.currentDish = dish;
 
       this.currentModal='edit';
-
+      this.imageBase64=this.currentDish.image;
       this.updateInitSelectedCategories();
       this.updateInitSelectedDiets();
       this.updateInitSelectedIngredients();
-
-      this.imageBase64 = dish.image;
-
-      console.log(this.imageBase64);
-      console.log(this.dietsList);
 
       button.setAttribute('data-target', '#editDishModal');
     }
@@ -484,6 +437,11 @@ export class DishesComponent implements OnInit {
       container.appendChild(button);
     }
     button.click();
+  }
+
+
+  public prepareDishFormWithSelectedData(form: NgForm) {
+
   }
 
   public resetForm(form: NgForm) {
