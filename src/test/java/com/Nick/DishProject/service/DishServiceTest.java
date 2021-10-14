@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.Nick.DishProject.testUtil.ObjectInstantiationUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -30,7 +31,7 @@ class DishServiceTest {
 
     @Test
     void testCreateDish_returnsDish() {
-        Dish dish = createDish();
+        Dish dish = createDish(null, null, "Pizza");
 
         when(dishService.addDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
@@ -43,7 +44,8 @@ class DishServiceTest {
     @Test
     void testFindAllDishes_returnsAllDishes() {
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(createDish());
+        dishes.add(createDish(null,null,"Pizza"));
+        dishes.add(createDish(null,null,"Pasta"));
         when(dishService.findAllDishes()).thenReturn(dishes);
 
         List<Dish> fetchedDishes = dishService.findAllDishes();
@@ -54,7 +56,7 @@ class DishServiceTest {
 
     @Test
     void testUpdateDish_returnsDish() {
-        Dish dish = createDish();
+        Dish dish = createDish(null,null,"Pizza");
 
         when(dishService.updateDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
         Dish updated = dishService.updateDish(dish);
@@ -71,22 +73,28 @@ class DishServiceTest {
     }
 
     @Test
-    void filterDishByCategory() {
+    void filterDishByDiet() {
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(createDish());
-        dishes.add(createSecondDish());
+        Set<Diet> diets = new HashSet<>();
+        diets.add(createDiet("ASIAN"));
+        dishes.add(createDish(diets, null, "PIZZA"));
+
+        diets.removeAll(diets);
+
+        diets.add(createDiet("PASTA"));
+        dishes.add(createDish(diets,null,"HELLO"));
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
-        List<String> q = new ArrayList<>();
-        q.add("ASIAN");
 
-        List<Dish> result = dishService.findAllFilteredDishes(q,null);
+        List<String> query = new ArrayList<>();
+        query.add("ASIAN");
+        List<Dish> result = dishService.findAllFilteredDishes(null,query);
         assertThat(dishes.size() != result.size());
 
-        q.removeAll(q);
-        q.add("PIZZA");
-        result = dishService.findAllFilteredDishes(q,null);
+        query.removeAll(query);
+        query.add("PIZZA");
+        result = dishService.findAllFilteredDishes(null,query);
         assertThat(result.size() == 0);
 
         result = dishService.findAllFilteredDishes(null,null);
@@ -94,25 +102,33 @@ class DishServiceTest {
     }
 
     @Test
-    void filterDishByDietTypeExists() {
+    void filterDishByCategoryExists() {
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(createDish());
-        dishes.add(createSecondDish());
+        Set<Category> categories = new HashSet<>();
+        categories.add(createCategory("VEGAN"));
+
+        dishes.add(createDish(null, categories, "PIZZA"));
+
+        categories.removeAll(categories);
+        categories.add(createCategory("REGULAR"));
+        dishes.add(createDish(null, categories,"REGULAR"));
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
         List<String> q = new ArrayList<>();
         q.add("VEGAN");
 
-        List<Dish> result = dishService.findAllFilteredDishes(null,q);
+        List<Dish> result = dishService.findAllFilteredDishes(q,null);
         assertThat(result.size() == 1);
     }
 
     @Test
-    void filterDishByDietTypeDoesntExist() {
+    void filterDishByDietDoesntExist() {
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(createDish());
-        dishes.add(createSecondDish());
+
+
+        dishes.add(createDish(null,null,"Hi"));
+        dishes.add(createDish(null,null, "Hello"));
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
@@ -124,10 +140,17 @@ class DishServiceTest {
     }
 
     @Test
-    void filterDishByDietTypeCapsInsensitive() {
+    void filterDishByDietCapsInsensitive() {
         List<Dish> dishes = new ArrayList<>();
-        dishes.add(createDish());
-        dishes.add(createSecondDish());
+        Set<Diet> diets = new HashSet<>();
+
+        diets.add(createDiet("VEGAN"));
+
+        dishes.add(createDish(diets,null,"Correct"));
+
+        diets.removeAll(diets);
+        diets.add(createDiet("VEGETARIAN"));
+        dishes.add(createDish(diets,null,"Incorrect"));
 
         when(dishService.findAllDishes()).thenReturn(dishes);
 
@@ -136,55 +159,5 @@ class DishServiceTest {
 
         List<Dish> result = dishService.findAllFilteredDishes(null, q);
         assertThat(dishes.size() == 1);
-    }
-
-    private Dish createDish() {
-        Set<Diet> diets= new HashSet<>();
-        Diet diet = new Diet();
-        diet.setType("VEGAN");
-        diets.add(diet);
-
-        Set<Category> categories = new HashSet<>();
-        Category category = new Category();
-        category.setType("ASIAN");
-        categories.add(category);
-
-        Dish dish = new Dish();
-        dish.setDiets(diets);
-        dish.setCategories(categories);
-        dish.setName("Something");
-        dish.setAvgTimeToMake(10);
-        dish.setCalories(100);
-        dish.setDescription("Definitely something");
-        dish.setWarm(true);
-        dish.setCategories(categories);
-        dish.setRating(10);
-        dish.setImage("");
-        dish.setLongDescription("Definitely definitely something");
-        return dish;
-    }
-    private Dish createSecondDish() {
-        Set<Diet> diets= new HashSet<>();
-        Diet diet = new Diet();
-        diet.setType("PESCO");
-        diets.add(diet);
-
-        Set<Category> categories = new HashSet<>();
-        Category category = new Category();
-        category.setType("MEDITERRANEAN");
-        categories.add(category);
-
-        Dish dish = new Dish();
-        dish.setDiets(diets);
-        dish.setName("Something");
-        dish.setAvgTimeToMake(10);
-        dish.setCalories(100);
-        dish.setDescription("Definitely something");
-        dish.setWarm(true);
-        dish.setCategories(categories);
-        dish.setRating(10);
-        dish.setImage("");
-        dish.setLongDescription("Definitely definitely something");
-        return dish;
     }
 }

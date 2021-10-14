@@ -4,11 +4,11 @@
     <div id="mobile-filter" class="collapse">
       <div>
         <h6 class="p-1 border-bottom">Filter By</h6>
-        <form #filterForm="ngForm" (ngSubmit)="onFilterDishes(filterForm)">
+        <form #filterForm="ngForm" (ngSubmit)="onFilterDishes()">
           <div>
             <p class="mb-2">Diet</p>
             <ul class="list-group">
-              <input type="text" [(ngModel)]="filterList?.diets!" name="diets" class="form-control" hidden>
+              <input type="text" [(ngModel)]="dietsList" name="diets" class="form-control" hidden>
               <label *ngFor="let diet of dietsList; let index = index;" id="lb-filterDiets">&nbsp;&nbsp;
                 <input
                 name="df{{index}}"
@@ -21,7 +21,7 @@
           <div>
             <p class="mb-2">Category</p>
             <ul class="list-group">
-              <input type="text" [(ngModel)]="filterList?.categories!" name="categories" class="form-control" hidden>
+              <input type="text" [(ngModel)]="categoryList" name="categories" class="form-control" hidden>
               <label *ngFor="let category of categoryList; let index = index;" id="lb-filterCategories">&nbsp;&nbsp;
                 <input
                   name="cf{{index}}"
