@@ -1,8 +1,6 @@
 package com.Nick.DishProject.service;
 
-import com.Nick.DishProject.exception.DishNotFoundException;
 import com.Nick.DishProject.exception.IngredientNotFoundException;
-import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.model.Ingredient;
 import com.Nick.DishProject.repository.IngredientRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.Nick.DishProject.testUtil.ObjectInstantiationUtil.createDish;
 import static com.Nick.DishProject.testUtil.ObjectInstantiationUtil.createIngredient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;

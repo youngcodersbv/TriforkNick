@@ -22,7 +22,7 @@ public class DietService {
     }
 
     public Diet findDietById(Long id) {
-        return dietRepository.findById(id).orElseThrow(() -> new DietNotFoundException("Diet by id "+id+" was not found."));
+        return dietRepository.findDietById(id).orElseThrow(() -> new DietNotFoundException("Diet by id "+id+" was not found."));
     }
 
     public Diet addDiet(Diet diet) {
