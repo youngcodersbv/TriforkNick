@@ -1,7 +1,6 @@
 package com.Nick.DishProject.service;
 
 import com.Nick.DishProject.exception.DietNotFoundException;
-import com.Nick.DishProject.exception.DishNotFoundException;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.repository.DietRepository;
 import org.springframework.beans.factory.annotation.Autowired;

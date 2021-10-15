@@ -88,8 +88,6 @@ class IngredientServiceTest {
 
     @Test
     void findIngredientById_DoesNotExistThrowsException() {
-        Ingredient ingredient = createIngredient("Salt","Seasoning");
-
         Optional<Ingredient> optionalIngredient = Optional.empty();
 
         when(ingredientRepository.findIngredientById(ArgumentMatchers.any(Long.class))).thenReturn(optionalIngredient);
