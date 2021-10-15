@@ -1,9 +1,6 @@
 package com.Nick.DishProject.testUtil;
 
-import com.Nick.DishProject.model.Category;
-import com.Nick.DishProject.model.Diet;
-import com.Nick.DishProject.model.Dish;
-import com.Nick.DishProject.model.Ingredient;
+import com.Nick.DishProject.model.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +11,15 @@ public class ObjectInstantiationUtil {
         Diet diet = new Diet();
         diet.setType(dietName);
         return diet;
+    }
+
+    public static DishIngredient createDishIngredient(Ingredient ingredient, Dish dish) {
+        DishIngredient dishIngredient = new DishIngredient();
+        dishIngredient.setIngredient(ingredient);
+        dishIngredient.setDish(dish);
+        dishIngredient.setAmountNeeded("1 something");
+
+        return dishIngredient;
     }
 
     public static Category createCategory(String categoryName) {

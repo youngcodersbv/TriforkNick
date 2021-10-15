@@ -1,6 +1,5 @@
 package com.Nick.DishProject.service;
 
-import com.Nick.DishProject.exception.CategoryNotFoundException;
 import com.Nick.DishProject.exception.DishIngredientNotFoundException;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.model.DishIngredient;

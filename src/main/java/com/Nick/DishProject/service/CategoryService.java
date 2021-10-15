@@ -21,7 +21,7 @@ public class CategoryService {
     }
 
     public Category findCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Diet by id "+id+" was not found."));
+        return categoryRepository.findCategoryById(id).orElseThrow(() -> new CategoryNotFoundException("Diet by id "+id+" was not found."));
     }
 
     public Category addCategory(Category category) {

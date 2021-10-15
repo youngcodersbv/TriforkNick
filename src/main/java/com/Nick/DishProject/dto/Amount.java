@@ -2,7 +2,6 @@ package com.Nick.DishProject.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Amount {
     private List<Integer> ing = new ArrayList<>();

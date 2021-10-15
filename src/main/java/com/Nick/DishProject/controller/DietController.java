@@ -1,9 +1,7 @@
 package com.Nick.DishProject.controller;
 
 import com.Nick.DishProject.model.Diet;
-import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.service.DietService;
-import com.Nick.DishProject.service.IngredientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
