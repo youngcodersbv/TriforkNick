@@ -5,7 +5,6 @@ import com.Nick.DishProject.dto.Amount;
 import com.Nick.DishProject.dto.DishDto;
 import com.Nick.DishProject.exception.DishIngredientNotFoundException;
 import com.Nick.DishProject.model.*;
-import com.Nick.DishProject.service.DietService;
 import com.Nick.DishProject.service.DishIngredientService;
 import com.Nick.DishProject.service.DishService;
 import com.Nick.DishProject.service.IngredientService;
@@ -21,15 +20,13 @@ import java.util.*;
 public class DishController {
 
     private final DishService dishService;
-    private final DietService dietService;
     private final DishIngredientService dishIngredientService;
     private final IngredientService ingredientService;
 
-    public DishController(DishService dishService, DietService dietService,
+    public DishController(DishService dishService,
                           DishIngredientService dishIngredientService,
                           IngredientService ingredientService) {
         this.dishService=dishService;
-        this.dietService=dietService;
         this.dishIngredientService = dishIngredientService;
         this.ingredientService = ingredientService;
     }

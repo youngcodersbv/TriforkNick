@@ -1,6 +1,5 @@
 package com.Nick.DishProject.controller;
 
-import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Ingredient;
 import com.Nick.DishProject.service.IngredientService;
 import org.springframework.http.HttpStatus;
