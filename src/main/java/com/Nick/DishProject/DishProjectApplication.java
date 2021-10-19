@@ -4,6 +4,7 @@ import com.Nick.DishProject.model.*;
 import com.Nick.DishProject.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -22,6 +23,7 @@ public class DishProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DishProjectApplication.class, args);
+		System.out.println(SpringBootVersion.getVersion());
 	}
 
 	@Profile("!test")
