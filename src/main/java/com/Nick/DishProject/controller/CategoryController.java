@@ -20,13 +20,13 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Category>> getAllDiets() {
+    public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.findAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> addDiet(@RequestBody Category category) {
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
         Category newCategory = categoryService.addCategory(category);
         return new ResponseEntity<>(newCategory,HttpStatus.CREATED);
     }

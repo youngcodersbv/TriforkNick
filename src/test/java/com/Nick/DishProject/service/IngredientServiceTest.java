@@ -3,11 +3,12 @@ package com.Nick.DishProject.service;
 import com.Nick.DishProject.exception.IngredientNotFoundException;
 import com.Nick.DishProject.model.Ingredient;
 import com.Nick.DishProject.repository.IngredientRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,9 +25,17 @@ class IngredientServiceTest {
 
     @Mock
     private IngredientRepository ingredientRepository;
-
-    @InjectMocks
     private IngredientService ingredientService;
+
+    @BeforeEach
+    void setUp() {
+        ingredientService = new IngredientService(ingredientRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        //
+    }
 
     @Test
     public void testFindAllIngredients_ReturnsAllIngredients() {

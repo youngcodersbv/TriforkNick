@@ -3,11 +3,12 @@ package com.Nick.DishProject.service;
 import com.Nick.DishProject.exception.CategoryNotFoundException;
 import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.repository.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,9 +25,17 @@ class CategoryServiceTest {
 
     @Mock
     private CategoryRepository categoryRepository;
-
-    @InjectMocks
     private CategoryService categoryService;
+
+    @BeforeEach
+    void setUp() {
+        categoryService = new CategoryService(categoryRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        //
+    }
 
     @Test
     public void testFindAllCategories_ReturnsAllCategories() {

@@ -5,11 +5,12 @@ import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.model.Diet;
 import com.Nick.DishProject.model.Dish;
 import com.Nick.DishProject.repository.DishRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -24,9 +25,17 @@ class DishServiceTest {
 
     @Mock
     private DishRepository dishRepository;
-
-    @InjectMocks
     private DishService dishService;
+
+    @BeforeEach
+    void setUp() {
+        dishService = new DishService(dishRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        //
+    }
 
     @Test
     void testCreateDish_returnsDish() {
@@ -83,7 +92,7 @@ class DishServiceTest {
         diets.add(createDiet("PASTA"));
         dishes.add(createDish(diets,null,"HELLO"));
 
-        when(dishService.findAllDishes()).thenReturn(dishes);
+        when(dishRepository.findAll()).thenReturn(dishes);
 
 
         List<String> query = new ArrayList<>();
