@@ -89,18 +89,24 @@ public class DishController {
         Iterator<DishIngredient> iter = dish.getIngredients().iterator();
         Set<DishIngredient> newIngredients = new HashSet<>();
 
+        //Loop through all incoming Ingredients of the Dish
         while(iter.hasNext()) {
             DishIngredient dI = iter.next();
+
+            //Make DishIngredientId to attempt a fetch of DishIngredient,
             DishIngredientId id = new DishIngredientId(dI.getDish().getId(), dI.getIngredient().getId());
             try {
                 DishIngredient oldDI = dishIngredientService.findDishIngredientById(id);
+                //if exists -> overwrite the old amount and add it to a list of fresh DishIngredients
                 oldDI.setAmountNeeded(dI.getAmountNeeded());
                 newIngredients.add(oldDI);
             } catch(DishIngredientNotFoundException e) {
+                //if not exists -> add current dishIngredient to list without modifications
                 newIngredients.add(dI);
             }
         }
 
+        //Wipe ALL current DishIngredients from db to prevent issues with persistence
         List<DishIngredient> wipe = dishIngredientService.findDishIngredientsByDish(dish);
         for(DishIngredient wipeDishIngredient : wipe) {
             if(!newIngredients.contains(wipeDishIngredient)) {
@@ -114,7 +120,7 @@ public class DishController {
         this.updateUpdateIngredientMapping(dish.getIngredients());
         dishService.updateDish(dish);
 
-        return new ResponseEntity<>(dish, HttpStatus.CREATED);
+        return new ResponseEntity<>(dish, HttpStatus.OK);
     }
 
     @PostMapping("/adddto")
@@ -212,7 +218,6 @@ public class DishController {
 
     private void addUpdateIngredientMapping(Set<DishIngredient> dIs) {
         for(DishIngredient dishIngredient : dIs) {
-
             this.dishIngredientService.addDishIngredient(dishIngredient);
             this.ingredientService.updateIngredient(dishIngredient.getIngredient());
         }

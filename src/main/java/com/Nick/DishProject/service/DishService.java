@@ -17,12 +17,10 @@ import java.util.stream.StreamSupport;
 public class DishService {
 
     private final DishRepository dishRepository;
-    private final DishIngredientService dishIngredientService;
 
     @Autowired
-    public DishService(DishRepository dishRepo, DishIngredientService dishIngredientService) {
+    public DishService(DishRepository dishRepo) {
         this.dishRepository =dishRepo;
-        this.dishIngredientService = dishIngredientService;
     }
 
     public Dish findDishById(Long id) {
