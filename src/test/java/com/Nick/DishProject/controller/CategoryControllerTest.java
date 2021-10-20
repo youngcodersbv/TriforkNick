@@ -83,6 +83,8 @@ public class CategoryControllerTest {
         verify(categoryService,times(1)).addCategory(ArgumentMatchers.any());
     }
 
+
+
     @Test
     public void testMvcUpdateCategory_ReturnsCategoryAsJSON() throws Exception {
         Category category = createCategory("Asian");
@@ -101,6 +103,7 @@ public class CategoryControllerTest {
 
         verify(categoryService,times(1)).updateCategory(ArgumentMatchers.any(Category.class));
     }
+
 
 
 

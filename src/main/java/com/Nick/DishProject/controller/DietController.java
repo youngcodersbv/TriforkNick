@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,14 @@ public class DietController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Diet> addDiet(@RequestBody Diet diet) {
+    public ResponseEntity<Diet> addDiet(@Valid @RequestBody Diet diet) {
         Diet newDiet = dietService.addDiet(diet);
         return new ResponseEntity<>(newDiet,HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<Diet> updateDiet(@RequestBody Diet diet) {
+    public ResponseEntity<Diet> updateDiet(@Valid @RequestBody Diet diet) {
         Diet newDiet = dietService.updateDiet(diet);
         return new ResponseEntity<>(newDiet, HttpStatus.OK);
     }

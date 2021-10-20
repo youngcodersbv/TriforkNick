@@ -6,6 +6,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +22,15 @@ public class Ingredient {
     private Long id;
 
     @Column
+    @NotNull
+    @NotBlank
+    @Size(max = 64)
     private String name;
 
     @Column
+    @NotNull
+    @NotBlank
+    @Size(max = 64)
     private String type;
 
     @OneToMany(mappedBy = "ingredient")

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,16 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> addCategory(@Valid
+            @RequestBody Category category) {
         Category newCategory = categoryService.addCategory(category);
         return new ResponseEntity<>(newCategory,HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
+    public ResponseEntity<Category> updateCategory(@Valid
+            @RequestBody Category category) {
         Category newCategory = categoryService.updateCategory(category);
         return new ResponseEntity<>(newCategory, HttpStatus.OK);
     }

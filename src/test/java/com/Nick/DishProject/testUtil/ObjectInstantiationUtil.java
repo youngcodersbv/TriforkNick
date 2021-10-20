@@ -1,5 +1,6 @@
 package com.Nick.DishProject.testUtil;
 
+import com.Nick.DishProject.dto.DishDto;
 import com.Nick.DishProject.model.*;
 
 import java.util.HashSet;
@@ -54,5 +55,15 @@ public class ObjectInstantiationUtil {
         dish.setLongDescription("Definitely definitely something");
 
         return dish;
+    }
+
+    public static DishDto createDishDto(String name, int rating, int calories, int avg) {
+        DishDto dishDto = new DishDto();
+        dishDto.setName(name);
+        dishDto.setWarm(true);
+        dishDto.setRating(rating);
+        dishDto.setCalories(calories);
+        dishDto.setAvgTimeToMake(avg);
+        return dishDto;
     }
 }

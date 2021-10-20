@@ -5,6 +5,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -16,8 +18,9 @@ public class Diet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-    @Column
+    @NotNull
+    @NotBlank
+    @Column(nullable = false)
     private String type;
 
     @ManyToMany(mappedBy = "diets")

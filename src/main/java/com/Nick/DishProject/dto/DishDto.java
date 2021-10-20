@@ -2,15 +2,31 @@ package com.Nick.DishProject.dto;
 
 import com.Nick.DishProject.model.*;
 
+import javax.validation.constraints.*;
 import java.util.Set;
 
 public class DishDto {
 
     private Long id;
+    @NotNull
+    @NotBlank
+    @Size(max = 64)
     private String name;
+
+    @NotNull
+    @Min(0)
     private int avgTimeToMake;
+
+    @NotNull
+    @Min(0)
     private int calories;
+
+    @NotNull
+    @Min(0)
+    @Max(10)
     private int rating;
+
+    @NotNull
     private boolean warm;
     private String image;
     private String description;

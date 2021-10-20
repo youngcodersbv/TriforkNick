@@ -121,7 +121,7 @@ class DishServiceTest {
         categories.add(createCategory("REGULAR"));
         dishes.add(createDish(null, categories,"REGULAR"));
 
-        when(dishService.findAllDishes()).thenReturn(dishes);
+        when(dishRepository.findAll()).thenReturn(dishes);
 
         List<String> q = new ArrayList<>();
         q.add("VEGAN");

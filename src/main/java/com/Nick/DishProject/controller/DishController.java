@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -67,7 +68,7 @@ public class DishController {
 
     @PostMapping("/add")
     @Transactional
-    public ResponseEntity<Dish> addDish(@RequestBody Dish dish) {
+    public ResponseEntity<Dish> addDish(@Valid @RequestBody Dish dish) {
 
         Dish newDish = dishService.addDish(dish);
         return new ResponseEntity<Dish>(newDish, HttpStatus.CREATED);
@@ -75,14 +76,14 @@ public class DishController {
 
     @PutMapping("/update")
     @Transactional
-    public ResponseEntity<Dish> updateDish(@RequestBody Dish dish) {
+    public ResponseEntity<Dish> updateDish(@Valid @RequestBody Dish dish) {
         Dish newDish = dishService.updateDish(dish);
         return new ResponseEntity<>(dish, HttpStatus.OK);
     }
 
     @PutMapping("/updatedto")
     @Transactional
-    public ResponseEntity<Dish> updateDishDto(@RequestBody DishDto dishDto) {
+    public ResponseEntity<Dish> updateDishDto(@Valid @RequestBody DishDto dishDto) {
 
         Dish dish = this.mapDtoToDish(dishDto);
 
@@ -125,7 +126,7 @@ public class DishController {
 
     @PostMapping("/adddto")
     @Transactional
-    public ResponseEntity<Dish> addDishDto(@RequestBody DishDto dishDto) {
+    public ResponseEntity<Dish> addDishDto(@Valid @RequestBody DishDto dishDto) {
 
         Dish dish = this.mapDtoToDish(dishDto);
         dishService.addDish(dish);
