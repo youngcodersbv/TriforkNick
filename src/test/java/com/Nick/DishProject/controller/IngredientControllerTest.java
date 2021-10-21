@@ -49,7 +49,7 @@ public class IngredientControllerTest {
 
         when(ingredientService.findAllIngredients()).thenReturn(ingredients);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/ingredient/all");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/ingredient/all");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentAsString()).contains(ingredients.get(0).getName());
@@ -66,7 +66,7 @@ public class IngredientControllerTest {
 
         when(ingredientService.addIngredient(ArgumentMatchers.any(Ingredient.class))).thenReturn(ingredient);
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/ingredient/add")
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/ingredient/add")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -83,7 +83,7 @@ public class IngredientControllerTest {
 
         when(ingredientService.updateIngredient(ArgumentMatchers.any(Ingredient.class))).thenReturn(ingredient);
 
-        RequestBuilder request = MockMvcRequestBuilders.put("/ingredient/update")
+        RequestBuilder request = MockMvcRequestBuilders.put("/api/ingredient/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -95,7 +95,7 @@ public class IngredientControllerTest {
 
     @Test
     void testMvcDeleteById() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.delete("/ingredient/delete/1");
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/ingredient/delete/1");
         MvcResult result = mvc.perform(request).andReturn();
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
 

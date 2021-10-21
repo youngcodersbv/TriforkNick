@@ -64,7 +64,7 @@ public class DishControllerTest {
 
         when(dishService.findAllFilteredDishes(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(dishes);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/dish/all");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/dish/all");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentAsString()).contains(dishes.get(0).getName());
@@ -103,7 +103,7 @@ public class DishControllerTest {
 
         when(dishService.findAllFilteredDishes(ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(dishes);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/dish/all");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/dish/all");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentAsString()).contains(dishes.get(0).getName());
@@ -131,7 +131,7 @@ public class DishControllerTest {
         when(dishService.findAllFilteredDishes(ArgumentMatchers.any(List.class), ArgumentMatchers.any(List.class)))
                 .thenReturn(new ArrayList<Dish>());
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/dish/all?category=Pizza&category=Pasta&diet=Regular&diet=Keto");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/dish/all?category=Pizza&category=Pasta&diet=Regular&diet=Keto");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentAsString()).isEqualTo(new ArrayList<>().toString());
@@ -147,7 +147,7 @@ public class DishControllerTest {
 
         when(dishService.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(dish);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/dish/find/1");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/dish/find/1");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getContentAsString()).contains(dish.getName());
@@ -170,7 +170,7 @@ public class DishControllerTest {
 
         when(dishService.addDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/dish/adddto")
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/dish/adddto")
                 .contentType(APPLICATION_JSON_UTF8).content(JSONValue.toJSONString(dishDto));
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -215,7 +215,7 @@ public class DishControllerTest {
 
         when(dishService.addDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/dish/adddto")
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/dish/adddto")
                 .contentType(APPLICATION_JSON_UTF8).content(JSONValue.toJSONString(dishDto));
 
         MvcResult result = mvc.perform(request).andReturn();
@@ -248,7 +248,7 @@ public class DishControllerTest {
         when(dishService.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(dish);
         when(dishService.updateDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
-        RequestBuilder request = MockMvcRequestBuilders.put("/dish/updatedto")
+        RequestBuilder request = MockMvcRequestBuilders.put("/api/dish/updatedto")
                 .contentType(APPLICATION_JSON_UTF8).content(JSONValue.toJSONString(dishDto));
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -295,7 +295,7 @@ public class DishControllerTest {
         when(dishService.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(dish);
         when(dishService.updateDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
-        RequestBuilder request = MockMvcRequestBuilders.put("/dish/updatedto")
+        RequestBuilder request = MockMvcRequestBuilders.put("/api/dish/updatedto")
                 .contentType(APPLICATION_JSON_UTF8).content(JSONValue.toJSONString(dishDto));
 
         MvcResult result = mvc.perform(request).andReturn();
@@ -315,7 +315,7 @@ public class DishControllerTest {
 
     @Test
     void testMvcDeleteDishById() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.delete("/dish/delete/1");
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/dish/delete/1");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());

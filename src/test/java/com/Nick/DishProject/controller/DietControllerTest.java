@@ -50,7 +50,7 @@ public class DietControllerTest {
                 .replace("\"dishes\":null,","");
         when(dietService.findAllDiets()).thenReturn(diets);
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/diet/all");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/diet/all");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(expected).isEqualTo(result.getResponse().getContentAsString());
@@ -68,7 +68,7 @@ public class DietControllerTest {
 
         when(dietService.addDiet(ArgumentMatchers.any(Diet.class))).thenReturn(diet);
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/diet/add")
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/diet/add")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -87,7 +87,7 @@ public class DietControllerTest {
 
         when(dietService.updateDiet(ArgumentMatchers.any(Diet.class))).thenReturn(diet);
 
-        RequestBuilder request = MockMvcRequestBuilders.put("/diet/update")
+        RequestBuilder request = MockMvcRequestBuilders.put("/api/diet/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -99,7 +99,7 @@ public class DietControllerTest {
 
     @Test
     void testMvcDeleteById() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.delete("/diet/delete/1");
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/diet/delete/1");
         MvcResult result = mvc.perform(request).andReturn();
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
 

@@ -55,7 +55,7 @@ public class CategoryControllerTest {
         when(categoryService.findAllCategories()).thenReturn(categories);
 
 
-        RequestBuilder request = MockMvcRequestBuilders.get("/category/all");
+        RequestBuilder request = MockMvcRequestBuilders.get("/api/category/all");
         MvcResult result = mvc.perform(request).andReturn();
 
         assertThat(expected).isEqualTo(result.getResponse().getContentAsString());
@@ -73,7 +73,7 @@ public class CategoryControllerTest {
 
         when(categoryService.addCategory(ArgumentMatchers.any(Category.class))).thenReturn(category);
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/category/add")
+        RequestBuilder request = MockMvcRequestBuilders.post("/api/category/add")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -94,7 +94,7 @@ public class CategoryControllerTest {
 
         when(categoryService.updateCategory(ArgumentMatchers.any(Category.class))).thenReturn(category);
 
-        RequestBuilder request = MockMvcRequestBuilders.put("/category/update")
+        RequestBuilder request = MockMvcRequestBuilders.put("/api/category/update")
                 .contentType(APPLICATION_JSON_UTF8).content(jsonValue);
         MvcResult result = mvc.perform(request).andReturn();
 
@@ -109,7 +109,7 @@ public class CategoryControllerTest {
 
     @Test
     public void testMvcDeleteById() throws Exception{
-        RequestBuilder request = MockMvcRequestBuilders.delete("/category/delete/1");
+        RequestBuilder request = MockMvcRequestBuilders.delete("/api/category/delete/1");
         MvcResult result = mvc.perform(request).andReturn();
         assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
 
