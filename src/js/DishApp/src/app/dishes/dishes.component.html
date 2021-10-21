@@ -38,8 +38,8 @@
     </div>
 </section>
 
-<div>
-  <a class="button" href="/dishes#" (click)="onOpenModal(null!, 'add')">Add Dish</a>
+<div class="addLink">
+  <a class="addLinkbutton" href="/dishes#" (click)="onOpenModal(null!, 'add')">Add Dish</a>
 </div>
 
 <!-- Modal Dish View -->
@@ -367,7 +367,8 @@
                 <input
                   type="checkbox"
                   (change)="onUpdateSelectedCategory(categoryList[index])"
-                  name="ac{{index}}">
+                  name="ac{{index}}"
+                  [checked]="categoryList[index].selected">
                 {{categoryList[index].type.toLocaleLowerCase()}}
               </label>
 
@@ -382,7 +383,8 @@
                 <input
                   type="checkbox"
                   (change)="onUpdateSelectedDiet(dietsList[index])"
-                  name="ad{{index}}">
+                  name="ad{{index}}"
+                  [checked]="dietsList[index].selected">
                 {{dietsList[index].type.toLocaleLowerCase()}}
               </label>
             </div>
@@ -397,7 +399,8 @@
                 <input
                   type="checkbox"
                   (change)="onUpdateSelectedIngredient(ingredientList[index])"
-                  name="ai{{index}}">
+                  name="ai{{index}}"
+                  [checked]="ingredientList[index].selected">
                 {{ingredientList[index].name.toLocaleLowerCase()}}
                 <div *ngIf="ingredientList[index].selected && currentModal=='add'">
                   <label for="ingredientAmount"></label>

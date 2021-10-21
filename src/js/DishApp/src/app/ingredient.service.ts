@@ -15,18 +15,18 @@ export class IngredientService{
   }
 
   public getIngredients(): Observable<Ingredient[]> {
-    return this.http.get<Ingredient[]>(`${this.apiServerUrl}/ingredient/all`);
+    return this.http.get<Ingredient[]>(`${this.apiServerUrl}/api/ingredient/all`);
   }
 
   public addIngredient(ingredient: Ingredient): Observable<Ingredient> {
-    return this.http.post<Ingredient>(`${this.apiServerUrl}/ingredient/add`,ingredient);
+    return this.http.post<Ingredient>(`${this.apiServerUrl}/api/ingredient/add`,ingredient);
   }
 
   public updateIngredient(ingredient: Ingredient): Observable<Ingredient> {
-    return this.http.put<Ingredient>(`${this.apiServerUrl}/ingredient/update`,ingredient);
+    return this.http.put<Ingredient>(`${this.apiServerUrl}/api/ingredient/update`,ingredient);
   }
 
   public deleteIngredient(ingredientId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/ingredient/delete/${ingredientId}`)
+    return this.http.delete<void>(`${this.apiServerUrl}/api/ingredient/delete/${ingredientId}`)
   }
 }

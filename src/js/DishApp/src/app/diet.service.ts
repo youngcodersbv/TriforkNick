@@ -15,18 +15,18 @@ export class DietService{
   }
 
   public getDiets(): Observable<Diet[]> {
-    return this.http.get<Diet[]>(`${this.apiServerUrl}/diet/all`);
+    return this.http.get<Diet[]>(`${this.apiServerUrl}/api/diet/all`);
   }
 
   public addDiet(diet: Diet): Observable<Diet> {
-    return this.http.post<Diet>(`${this.apiServerUrl}/diet/add`,diet);
+    return this.http.post<Diet>(`${this.apiServerUrl}/api/diet/add`,diet);
   }
 
   public updateDiet(diet: Diet): Observable<Diet> {
-    return this.http.put<Diet>(`${this.apiServerUrl}/diet/update`,diet);
+    return this.http.put<Diet>(`${this.apiServerUrl}/api/diet/update`,diet);
   }
 
   public deleteDiet(dietId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/diet/delete/${dietId}`)
+    return this.http.delete<void>(`${this.apiServerUrl}/api/diet/delete/${dietId}`)
   }
 }

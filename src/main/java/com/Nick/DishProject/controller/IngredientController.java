@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredient")
+@RequestMapping("/api/ingredient")
 public class IngredientController {
 
     private IngredientService ingredientService;

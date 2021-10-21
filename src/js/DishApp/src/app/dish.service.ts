@@ -15,7 +15,7 @@ export class DishService{
   }
 
   public getDishes(): Observable<Dish[]> {
-    return this.http.get<Dish[]>(`${this.apiServerUrl}/dish/all`);
+    return this.http.get<Dish[]>(`${this.apiServerUrl}/api/dish/all`);
   }
 
   public getDishesFiltered(cats: string[], diets: string[]) {
@@ -28,29 +28,29 @@ export class DishService{
     for(let d of diets) {
       dietParams += "diet="+d+"&";
     }
-    let url = `${this.apiServerUrl}/dish/all?${catParams}${dietParams}`;
+    let url = `${this.apiServerUrl}/api/dish/all?${catParams}${dietParams}`;
     url = url.slice(0,url.length-1);
     console.log(url);
     return this.http.get<Dish[]>(url);
   }
 
   public addDish(dish: Dish): Observable<Dish> {
-    return this.http.post<Dish>(`${this.apiServerUrl}/dish/add`,dish);
+    return this.http.post<Dish>(`${this.apiServerUrl}/api/dish/add`,dish);
   }
 
   public addDishDto(dish: Dish): Observable<Dish> {
-    return this.http.post<Dish>(`${this.apiServerUrl}/dish/adddto`,dish);
+    return this.http.post<Dish>(`${this.apiServerUrl}/api/dish/adddto`,dish);
   }
 
   public updateDishDto(dish: Dish): Observable<Dish> {
-    return this.http.put<Dish>(`${this.apiServerUrl}/dish/updatedto`,dish);
+    return this.http.put<Dish>(`${this.apiServerUrl}/api/dish/updatedto`,dish);
   }
 
   public updateDish(dish: Dish): Observable<Dish> {
-    return this.http.put<Dish>(`${this.apiServerUrl}/dish/update`,dish);
+    return this.http.put<Dish>(`${this.apiServerUrl}/api/dish/update`,dish);
   }
 
   public deleteDish(dishId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/dish/delete/${dishId}`)
+    return this.http.delete<void>(`${this.apiServerUrl}/api/dish/delete/${dishId}`)
   }
 }

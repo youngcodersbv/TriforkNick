@@ -331,6 +331,7 @@ export class DishesComponent implements OnInit {
           am: []
         };
         addForm.reset();
+        addForm.resetForm();
         this.currentModal='';
         this.getDishes();
       },
@@ -360,8 +361,6 @@ export class DishesComponent implements OnInit {
     updateForm.controls['diets'].setValue(this.getSelectedDiets());
     updateForm.controls['categories'].setValue(this.getSelectedCategories());
     updateForm.controls['ingredients'].setValue(this.getSelectedIngredients());
-
-
 
     updateForm.controls['image'].setValue(this.imageBase64);
 
@@ -410,10 +409,17 @@ export class DishesComponent implements OnInit {
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
+      this.imageBase64=null;
       this.currentModal='add';
+      this.wipeSelectedIngredients();
+      this.wipeSelectedDiets();
+      this.wipeSelectedCategories();
       button.setAttribute('data-target', '#addDishModal');
     }
     if (mode === 'edit') {
+      this.wipeSelectedCategories();
+      this.wipeSelectedDiets();
+      this.wipeSelectedIngredients();
       this.currentDish = dish;
 
       this.currentModal='edit';

@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping("/dish")
+@RequestMapping("/api/dish")
 public class DishController {
 
     private final DishService dishService;
@@ -87,7 +87,10 @@ public class DishController {
 
         Dish dish = this.mapDtoToDish(dishDto);
 
-        Iterator<DishIngredient> iter = dish.getIngredients().iterator();
+        Dish pDish = dishService.findDishById(dish.getId());
+        pDish.setIngredients(dish.getIngredients());
+
+        Iterator<DishIngredient> iter = pDish.getIngredients().iterator();
         Set<DishIngredient> newIngredients = new HashSet<>();
 
         //Loop through all incoming Ingredients of the Dish
@@ -107,19 +110,28 @@ public class DishController {
             }
         }
 
+
+        /*
+
         //Wipe ALL current DishIngredients from db to prevent issues with persistence
-        List<DishIngredient> wipe = dishIngredientService.findDishIngredientsByDish(dish);
+        List<DishIngredient> wipe = dishIngredientService.findDishIngredientsByDish(pDish);
         for(DishIngredient wipeDishIngredient : wipe) {
             if(!newIngredients.contains(wipeDishIngredient)) {
                 dishIngredientService.deleteDishIngredientById(wipeDishIngredient.getId());
             }
         }
 
+         */
 
-        dish.setIngredients(newIngredients);
+        for(DishIngredient dIii : pDish.getIngredients()) {
+            System.out.println(dIii.getIngredient().getName());
+        }
 
-        this.updateUpdateIngredientMapping(dish.getIngredients());
-        dishService.updateDish(dish);
+
+        pDish.setIngredients(newIngredients);
+
+        this.updateUpdateIngredientMapping(pDish.getIngredients());
+        dishService.updateDish(pDish);
 
         return new ResponseEntity<>(dish, HttpStatus.OK);
     }

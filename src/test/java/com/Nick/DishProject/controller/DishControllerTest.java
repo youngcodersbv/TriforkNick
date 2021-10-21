@@ -245,6 +245,7 @@ public class DishControllerTest {
         dish.setName("Hello");
         dish.setDescription("Testdesc");
 
+        when(dishService.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(dish);
         when(dishService.updateDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
         RequestBuilder request = MockMvcRequestBuilders.put("/dish/updatedto")
@@ -291,7 +292,7 @@ public class DishControllerTest {
         dish.setDescription("Testdesc");
 
         when(dishIngredientService.findDishIngredientById(ArgumentMatchers.any(DishIngredientId.class))).thenThrow(new DishIngredientNotFoundException("Errorrr"));
-
+        when(dishService.findDishById(ArgumentMatchers.any(Long.class))).thenReturn(dish);
         when(dishService.updateDish(ArgumentMatchers.any(Dish.class))).thenReturn(dish);
 
         RequestBuilder request = MockMvcRequestBuilders.put("/dish/updatedto")
