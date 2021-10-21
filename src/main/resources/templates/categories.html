@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+    <title>Categories</title>
+</head>
+<body>
+    <div class="Title">
+        <h1>Categories</h1>
+    </div>
+    <div class="content">
+        <table>
+            <thead>
+                <tr>
+                    <th th:text="ID"></th>
+                    <th th:text="Type"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category:${categories}">
+                    <td th:text="${category.id}"></td>
+                    <td th:text="${category.type}"></td>
+                    <td>
+                        <a th:href="@{'/categories/'+${category.id}}" th:text="edit"></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h5>add</h5>
+    </div>
+    <form action="#" th:action="@{/categories}" th:object="${categories}" method="post">
+        <input type="text" th:value="${type}" name="type"/><br />
+        <input type="submit" />
+    </form>
+
+</body>
+</html>

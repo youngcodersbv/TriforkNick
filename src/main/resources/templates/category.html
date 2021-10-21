@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Category</title>
+</head>
+<body>
+    <div>
+        <h5>Category ID: <th th:text="${category.id}"></th> </h5>
+    </div>
+    <div class="data">
+        <table>
+        <thead>
+            <tr>
+                <th th:text="ID"></th>
+                <th th:text="Type"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.type}"></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="form">
+        <form action="#" th:action="@{/categories}" th:object="${categories}" method="post">
+            <input type="text" th:value="${category.id}" name="id" required/><br />
+            <input type="text" th:value="${category.type}" name="type" required/><br />
+            <input type="submit" />
+        </form>
+    </div>
+</body>
+</html>
