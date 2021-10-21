@@ -23,7 +23,17 @@
                     <td th:text="${category.id}"></td>
                     <td th:text="${category.type}"></td>
                     <td>
-                        <a th:href="@{'/categories/'+${category.id}}" th:text="edit"></a>
+                        <a th:href="@{'/categories/'+${category.id}}">
+                            <input type="submit" class="edit" value="edit"/>
+                        </a>
+                    </td>
+                    <td>
+                        <form action="#" th:action="@{/categories}" th:object="${category}" th:method="delete">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <input type="hidden" th:value="${category.id}" name="id" required/>
+                            <input type="submit"  class="delete" value="delete"/>
+                        </form>
+
                     </td>
                 </tr>
             </tbody>
@@ -33,8 +43,11 @@
     <div>
         <h5>add</h5>
     </div>
-    <form action="#" th:action="@{/categories}" th:object="${categories}" method="post">
-        <input type="text" th:value="${type}" name="type"/><br />
+    <form th:action="@{/categories}" th:object="${category}" method="post">
+        <input type="text" th:value="${type}" name="type"/>
+        <p th:if="${#fields.hasErrors('type')}" th:class="${#fields.hasErrors('type')}? error">
+            Cannot be empty!</p>
+        <br />
         <input type="submit" />
     </form>
 

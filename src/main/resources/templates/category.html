@@ -26,9 +26,12 @@
         </table>
     </div>
     <div class="form">
-        <form action="#" th:action="@{/categories}" th:object="${categories}" method="post">
-            <input type="text" th:value="${category.id}" name="id" required/><br />
-            <input type="text" th:value="${category.type}" name="type" required/><br />
+        <form action="#" th:action="@{/categories}" th:object="${category}" th:method="put">
+            <input type="hidden" name="_method" value="put"/>
+            <input type="hidden" th:value="${category.id}" name="id" />
+            <input type="text" th:value="${category.type}" name="type" />
+            <p th:if="${#fields.hasErrors('type')}" th:class="${#fields.hasErrors('type')}? error">
+                Cannot be empty!</p><br />
             <input type="submit" />
         </form>
     </div>
