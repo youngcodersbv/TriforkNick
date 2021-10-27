@@ -19,11 +19,11 @@ export class InputHandler{
               player.direction += turning_speed;
             }
         }
-
         if(this.inputManager.keyDown("ShiftLeft")) {
             mode=true;
         } else {
             mode=false;
         }
+        return mode;
     }
 }

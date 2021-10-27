@@ -64,12 +64,14 @@ export function refresh() {
   }
 }
 
-window.onload= function() {refresh();}
+//window.onload= function() {refresh();}
 
 function init() {
     gameObjects.player=null;
     gameObjects.food=[];
     gameObjects.body=[];
+
+    menuObjects.buttons=[];
 
     engine = new Engine(60);
     scoreHandler = new ScoreHandler();
@@ -123,8 +125,8 @@ function loop(timestamp) {
             body.move();
           }
 
-          //HANDLE INPUT  
-          inputHandler.handleInput(gameObjects.player,turning_speed,mode);
+          //HANDLE INPUT
+          mode = inputHandler.handleInput(gameObjects.player,turning_speed, mode);
 
           //GENERATE FOOD AND POPULATE LIST
           var newfood = engine.generateFood(gameObjects.food.length);
