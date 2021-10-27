@@ -88,6 +88,8 @@ public class DishController {
         Dish dish = this.mapDtoToDish(dishDto);
 
         Dish pDish = dishService.findDishById(dish.getId());
+        pDish.setDiets(dish.getDiets());
+        pDish.setCategories(dish.getCategories());
         pDish.setIngredients(dish.getIngredients());
 
         Iterator<DishIngredient> iter = pDish.getIngredients().iterator();
@@ -109,20 +111,6 @@ public class DishController {
                 newIngredients.add(dI);
             }
         }
-
-
-        /*
-
-        //Wipe ALL current DishIngredients from db to prevent issues with persistence
-        List<DishIngredient> wipe = dishIngredientService.findDishIngredientsByDish(pDish);
-        for(DishIngredient wipeDishIngredient : wipe) {
-            if(!newIngredients.contains(wipeDishIngredient)) {
-                dishIngredientService.deleteDishIngredientById(wipeDishIngredient.getId());
-            }
-        }
-
-         */
-
         for(DishIngredient dIii : pDish.getIngredients()) {
             System.out.println(dIii.getIngredient().getName());
         }
