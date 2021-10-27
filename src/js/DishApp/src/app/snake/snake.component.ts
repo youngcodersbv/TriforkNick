@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit} from "@angular/core";
-import {refresh} from '../../assets/snake/snake.js';
+import {refresh} from '../../assets/snake/snake';
 
 @Component({
   selector: 'app-ingredients',
@@ -12,12 +12,22 @@ export class SnakeComponent implements OnInit, AfterViewInit {
   };
 
   ngOnInit() {
+    this.loadScript("../assets/snake/snake.js");
   }
 
   ngAfterViewInit() {
-
     refresh();
   }
 
 
+ loadScript(url: string) {
+  const body = <HTMLDivElement> document.body;
+  const script = document.createElement('script');
+  script.innerHTML = '';
+  script.type='module';
+  script.src = url;
+  script.async = false;
+  script.defer = true;
+  body.appendChild(script);
+}
 }

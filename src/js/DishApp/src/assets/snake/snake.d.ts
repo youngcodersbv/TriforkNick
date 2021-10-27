@@ -1,1 +1,1 @@
-export declare function refresh(): void;
+export declare function refresh(): any;
