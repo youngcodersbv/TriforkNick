@@ -1,7 +1,6 @@
 package com.Nick.DishProject.controller.th;
 
 import com.Nick.DishProject.controller.CategoryController;
-import com.Nick.DishProject.exception.CategoryNotFoundException;
 import com.Nick.DishProject.model.Category;
 import com.Nick.DishProject.service.CategoryService;
 import org.springframework.stereotype.Controller;
@@ -12,12 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @Controller
 public class ThCategoryController {

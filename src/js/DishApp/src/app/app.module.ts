@@ -9,6 +9,7 @@ import { DietsComponent } from './diets/diets.component';
 import { RouterModule} from "@angular/router";
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { CategoriesComponent } from './categories/categories.component';
+import {SnakeComponent} from "./snake/snake.component";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CategoriesComponent } from './categories/categories.component';
     DishesComponent,
     DietsComponent,
     IngredientsComponent,
-    CategoriesComponent
+    CategoriesComponent,
+    SnakeComponent
   ],
   imports: [
     BrowserModule,
@@ -25,8 +27,12 @@ import { CategoriesComponent } from './categories/categories.component';
     RouterModule.forRoot([{path: 'dishes', component: DishesComponent},
                                 {path: 'diets', component: DietsComponent},
                                 {path: 'ingredients', component: IngredientsComponent},
-                                {path: 'categories', component: CategoriesComponent}
+                                {path: 'categories', component: CategoriesComponent},
+                                {path: 'lab', component: SnakeComponent}
     ]),
+  ],
+  exports: [
+    RouterModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
