@@ -91,6 +91,15 @@ public class DishController {
         pDish.setDiets(dish.getDiets());
         pDish.setCategories(dish.getCategories());
         pDish.setIngredients(dish.getIngredients());
+        pDish.setDescription(dish.getDescription());
+
+        pDish.setLongDescription(dish.getLongDescription());
+        pDish.setWarm(dish.isWarm());
+        pDish.setImage(dish.getImage());
+        pDish.setCalories(dish.getCalories());
+        pDish.setRating(dish.getRating());
+        pDish.setAvgTimeToMake(dish.getAvgTimeToMake());
+        pDish.setName(dish.getName());
 
         Iterator<DishIngredient> iter = pDish.getIngredients().iterator();
         Set<DishIngredient> newIngredients = new HashSet<>();
